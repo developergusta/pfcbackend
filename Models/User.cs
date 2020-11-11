@@ -15,6 +15,7 @@ namespace Ticket2U.API.Models
         public string? Cpf { get; set; }
         public string? Rg { get; set; }
         public string Status { get; set; }
+        public decimal Credit { get; set; }
         public int? ImageId { get; set; }
         [ForeignKey("ImageId")]
         public Image Image { get; set; }

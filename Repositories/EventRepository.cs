@@ -180,16 +180,16 @@ namespace Ticket2U.API.Repositories
 
         public async Task BuyTicket(List<Ticket> tickets)
         {
+
             tickets.ForEach( tkt => _context.Tickets.AddAsync(tkt) );
             await _context.SaveChangesAsync();
         } 
 
-        public async Task GetMostSoldEvents()
+        public async Task<IEnumerable<Event>> GetEventsToday()
         {
-            using (var context = new DataContext())
-            {
-                var result = context.Events.FromSqlRaw("SELECT ");
-            }
+            DateTime now = DateTime.UtcNow;
+            var result = await _context.Events.Where( evt => now.Month == evt.DateStart.Month && now.Year == evt.DateStart.Year && evt.DateStart.Day == now.Day ).ToListAsync();
+            return result;
         }
     }
 }

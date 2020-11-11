@@ -89,6 +89,7 @@ namespace Ticket2U.API.Controllers
                 user.Status = "ATIVO";
                 user.RegisterTime = DateTime.UtcNow;
                 user.Login.Perfil = "USUARIO";
+                user.Credit = 100;
                 user.Login.Pass = Services.Encryptor.MD5Hash(user.Login.Pass);
                 bool teste = await _repository.CreateUser(user);
                 if (teste)

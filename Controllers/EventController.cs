@@ -36,6 +36,22 @@ namespace Ticket2U.API.Controllers
             }
         }
 
+        [Route("Today")]
+        [HttpGet]
+        public async Task<IActionResult> GetEventsToday()
+        {
+            try
+            {
+                var events = await _repository.GetEventsToday();
+                return Ok(events);
+            }
+            catch (Exception ex)
+            {
+                Console.Write($"Erro: {ex}");
+                return this.StatusCode(StatusCodes.Status500InternalServerError, "Erro na listagem de eventos");
+            }
+        }
+
         [Route("{id}")]
         [HttpGet]
         public async Task<IActionResult> GetEvent(int id)

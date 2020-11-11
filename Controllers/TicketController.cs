@@ -47,8 +47,7 @@ namespace Ticket2U.API.Controllers
             }
             catch (System.Exception)
             {
-                
-                throw;
+                return this.StatusCode(StatusCodes.Status500InternalServerError, "Erro na compra de ingressos");
             }
         }
     }
