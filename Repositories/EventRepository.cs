@@ -65,6 +65,11 @@ namespace Ticket2U.API.Repositories
             return await query.ToArrayAsync();
         }
 
+        public async Task<LotCategory> GetLotCategoryById(int lotCatgId)
+        {
+            LotCategory lotCatg = await _context.LotCategories.Where( x => x.LotCategoryId == x.LotCategoryId).FirstOrDefaultAsync();
+            return lotCatg;
+        }
         public async Task<IEnumerable<Event>> GetEventsByUserId(int userId)
         {
             IQueryable<Event> query = _context.Events
@@ -191,10 +196,11 @@ namespace Ticket2U.API.Repositories
         public async Task BuyTicket(List<Ticket> tickets)
         {
 
-            tickets.ForEach( tkt => _context.Tickets.AddAsync(tkt) );
+            tickets.ForEach( tkt => _context.Tickets.AddAsync(tkt));
             await _context.SaveChangesAsync();
         } 
 
+        
         public async Task<IEnumerable<Event>> GetEventsToday()
         {
             DateTime now = DateTime.UtcNow;

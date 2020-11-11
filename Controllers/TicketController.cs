@@ -21,12 +21,31 @@ namespace Ticket2U.API.Controllers
         [Route("Buy")]
         [HttpPost]
         [Authorize(Roles = "USUARIO")]
-        public async Task<IActionResult> BuyTicket([FromBody]List<Ticket> tickets)
+        public async Task<IActionResult> BuyTicket([FromBody] List<Ticket> tickets)
         {
             try
             {
-                await _EventRepository.BuyTicket(tickets);
-                return Created($"/Ticket/{tickets[0].UserId}", tickets);
+                int idUsuario = tickets[0].UserId.GetValueOrDefault();
+                var user = await _UserRepository.GetUserById(idUsuario);
+                if (user.Credit > 0)
+                {
+                    decimal valTotal = 0;
+                    foreach (var item in tickets)
+                    {
+                        int idCatg = item.LotCategoryId.GetValueOrDefault();
+                        var lotcatg = await _EventRepository.GetLotCategoryById(idCatg);
+                        valTotal = valTotal + lotcatg.PriceCategory;
+                    }
+                    if (user.Credit > valTotal ){
+                        return this.StatusCode(StatusCodes.Status500InternalServerError, "Saldo insuficiente");
+                    }
+                    await _EventRepository.BuyTicket(tickets);
+                    await _UserRepository.UpdateSaldo(valTotal, user);
+                    return Created($"/Ticket/{tickets[0].UserId}", tickets);
+                }
+                else{
+                    return this.StatusCode(StatusCodes.Status500InternalServerError, "Saldo insuficiente");
+                }
             }
             catch (System.Exception)
             {

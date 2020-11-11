@@ -174,19 +174,13 @@ namespace Ticket2U.API.Repositories
             return await _context.Addresses.FirstOrDefaultAsync(x => x.AddressId == id);
         }
 
-        public async Task<bool> BuyTicket(Ticket ticket)
+        public async Task UpdateSaldo(decimal valTotal, User userObj)
         {
-            try
-            {
-                _context.Tickets.Add(ticket);
-                await _context.SaveChangesAsync();
-                return true;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Erro: {ex}");
-                return false;
-            }
+            var userLocal = _context.Users    
+                    .Where(x => x.UserId == userObj.UserId)                    
+                    .FirstOrDefault();
+
+                userLocal.Credit = (userLocal.Credit-valTotal);
         }
     }
 }
