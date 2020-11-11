@@ -265,7 +265,7 @@ namespace Ticket2U.API.Migrations
                     b.Property<string>("Cpf")
                         .HasColumnType("text");
 
-                    b.Property<decimal>("Credit")
+                    b.Property<decimal?>("Credit")
                         .HasColumnType("numeric");
 
                     b.Property<DateTime?>("DateBirth")

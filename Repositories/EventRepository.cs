@@ -188,7 +188,7 @@ namespace Ticket2U.API.Repositories
         public async Task<IEnumerable<Event>> GetEventsToday()
         {
             DateTime now = DateTime.UtcNow;
-            var result = await _context.Events.Where( evt => now.Month == evt.DateStart.Month && now.Year == evt.DateStart.Year && evt.DateStart.Day == now.Day ).ToListAsync();
+            var result = await _context.Events.Where( evt => now.Month == evt.DateStart.Month && now.Year == evt.DateStart.Year && evt.DateStart.Day == now.Day ).Include( x => x.Images).Include( x => x.Address).ToListAsync();
             return result;
         }
     }

@@ -110,6 +110,22 @@ namespace Ticket2U.API.Controllers
             }
         }
 
+        [Route("getByUserId/{userId}")]
+        [HttpGet]
+        public async Task<IActionResult> GetApprovedEvents([FromBody] int userId)
+        {
+            try
+            {
+                var events = await _repository.GetEventsByUserId(userId);
+
+                return Ok(events);
+            }
+            catch (Exception ex)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao retornar eventos: {ex}");
+            }
+        }
+
         [Route("getByCategory/{category}")]
         [HttpGet]
         public async Task<IActionResult> GetEventByCategory([FromBody] string category)

@@ -10,7 +10,7 @@ using Ticket2U.API.Data;
 namespace Ticket2U.API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20201111183319_02")]
+    [Migration("20201111185038_02")]
     partial class _02
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -267,7 +267,7 @@ namespace Ticket2U.API.Migrations
                     b.Property<string>("Cpf")
                         .HasColumnType("text");
 
-                    b.Property<decimal>("Credit")
+                    b.Property<decimal?>("Credit")
                         .HasColumnType("numeric");
 
                     b.Property<DateTime?>("DateBirth")

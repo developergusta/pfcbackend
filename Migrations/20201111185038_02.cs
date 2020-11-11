@@ -9,8 +9,7 @@ namespace Ticket2U.API.Migrations
             migrationBuilder.AddColumn<decimal>(
                 name: "Credit",
                 table: "Users",
-                nullable: false,
-                defaultValue: 0m);
+                nullable: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
