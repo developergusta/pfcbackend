@@ -19,6 +19,9 @@ namespace Ticket2U.API.Models
         [ForeignKey("LotId")]
         public Lot Lot { get; set; }
         public int? LotId { get; set; }
+         [ForeignKey("LotCategoryId")]
+        public LotCategory LotCategory { get; set; }
+        public int? LotCategoryId { get; set; }
         
     }
 }
