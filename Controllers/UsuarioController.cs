@@ -197,37 +197,6 @@ namespace Ticket2U.API.Controllers
             }
         }
 
-        [Route("Upload")]
-        [HttpPost]
-        public async Task<IActionResult> Upload()
-        {
-            try
-            {
-                // var file = Request.Form.Files[0];
-                // var folderName = Path.Combine("Resources", "Images");
-                // var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
-
-                // if (file.Length > 0)
-                // {
-                //     var filename = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName;
-                //     var fullPath = Path.Combine(pathToSave, filename.Replace("\"", " ").Trim()); 
-
-                //     using (var stream = new FileStream(fullPath, FileMode.Create))
-                //     {
-                //         file.CopyTo(stream);
-                //     }
-                //     return this.StatusCode(StatusCodes.Status200OK, filename);;
-                // }
-
-                return Ok();
-            }
-            catch (System.Exception)
-            {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, "Erro ao tentar realizar upload de imagem");
-            }
-        }
-
-
         [Route("RecoverPass")]
         [HttpPost]
         public async Task<IActionResult> RecoverPass([FromBody] string cpf)
