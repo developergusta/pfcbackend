@@ -85,10 +85,6 @@ namespace Ticket2U.API
                 ui.SwaggerEndpoint("/swagger/v1.0/swagger.json", "Ticket2U API");
             } );
 
-            app.UseStaticFiles(new StaticFileOptions(){
-                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Resources")),
-                RequestPath = new PathString("/Resources")
-            });
 
             app.UseAuthorization();
 
