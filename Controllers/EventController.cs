@@ -110,7 +110,7 @@ namespace Ticket2U.API.Controllers
             }
         }
 
-        [Route("getByUserId/{userId}")]
+        [Route("getApproved")]
         [HttpGet]
         public async Task<IActionResult> GetApprovedEvents([FromBody] int userId)
         {

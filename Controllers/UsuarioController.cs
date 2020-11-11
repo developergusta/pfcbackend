@@ -252,27 +252,27 @@ namespace Ticket2U.API.Controllers
             .Select(s => s[random.Next(s.Length)]).ToArray());
         }
 
-        [Route("BuyTicket")]
-        [HttpPost]
-        public async Task<IActionResult> BuyTicket([FromBody] Ticket ticket)
-        {
-            try
-            {
-                var user = await _repository.GetUserById(ticket.User.UserId);
+        // [Route("BuyTicket")]
+        // [HttpPost]
+        // public async Task<IActionResult> BuyTicket([FromBody] Ticket ticket)
+        // {
+        //     try
+        //     {
+        //         var user = await _repository.GetUserById(ticket.User.UserId);
 
-                if (user == null) return NotFound();
-                else
-                {
-                    await _repository.BuyTicket(ticket);
-                    EmailService.recoverPass(user);
-                    return this.StatusCode(StatusCodes.Status200OK, "Ingresso comprado com sucesso");
-                }
-            }
-            catch (Exception ex)
-            {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao comprar ingresso: {ex.Message}");
-            }
-        }
+        //         if (user == null) return NotFound();
+        //         else
+        //         {
+        //             await _repository.BuyTicket(ticket);
+        //             EmailService.recoverPass(user);
+        //             return this.StatusCode(StatusCodes.Status200OK, "Ingresso comprado com sucesso");
+        //         }
+        //     }
+        //     catch (Exception ex)
+        //     {
+        //         return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao comprar ingresso: {ex.Message}");
+        //     }
+        // }
         
     }
 }
