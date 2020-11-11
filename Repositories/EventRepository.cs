@@ -177,5 +177,11 @@ namespace Ticket2U.API.Repositories
         {
             _context.RemoveRange(entityArray);
         }
+
+        public async Task BuyTicket(List<Ticket> tickets)
+        {
+            tickets.ForEach( tkt => _context.Tickets.AddAsync(tkt) );
+            await _context.SaveChangesAsync();
+        } 
     }
 }

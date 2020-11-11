@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Ticket2U.API.Repositories;
 using Ticket2U.API.Models;
-using AutoMapper;
 
 namespace Ticket2U.API.Controllers
 {
@@ -16,7 +15,6 @@ namespace Ticket2U.API.Controllers
     public class EventController : Controller
     {
         private readonly EventRepository _repository;
-        private readonly IMapper _mapper;
         public EventController(EventRepository repository)
         {
             _repository = repository;
@@ -79,6 +77,40 @@ namespace Ticket2U.API.Controllers
             }
         }
 
+        
+        [Route("getByUserId/{userId}")]
+        [HttpGet]
+        public async Task<IActionResult> GetEventsByUserId([FromBody] int userId)
+        {
+            try
+            {
+                var events = await _repository.GetEventsByUserId(userId);
+
+                return Ok(events);
+            }
+            catch (Exception ex)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao retornar eventos: {ex}");
+            }
+        }
+
+        [Route("getByCategory/{category}")]
+        [HttpGet]
+        public async Task<IActionResult> GetEventByCategory([FromBody] string category)
+        {
+            try
+            {
+                var events = await _repository.GetEventByCategory(category);
+
+                return Ok(events);
+            }
+            catch (Exception ex)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao retornar eventos: {ex}");
+            }
+        }
+
+
         [Route("")]
         [AllowAnonymous]
         [HttpPost]
@@ -123,38 +155,6 @@ namespace Ticket2U.API.Controllers
             return BadRequest();
         }
 
-        [Route("getByUserId/{userId}")]
-        [HttpGet]
-        public async Task<IActionResult> GetEventsByUserId([FromBody] int userId)
-        {
-            try
-            {
-                var events = await _repository.GetEventsByUserId(userId);
-
-                return Ok(events);
-            }
-            catch (Exception ex)
-            {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao retornar eventos: {ex}");
-            }
-        }
-
-        [Route("getByCategory/{category}")]
-        [HttpGet]
-        public async Task<IActionResult> GetEventByCategory([FromBody] string category)
-        {
-            try
-            {
-                var events = await _repository.GetEventByCategory(category);
-
-                return Ok(events);
-            }
-            catch (Exception ex)
-            {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao retornar eventos: {ex}");
-            }
-        }
-
         [Route("{EventId}")]
         [HttpPut]
         public async Task<IActionResult> UpdateEvent(int EventId, [FromBody] Event eventObj)
@@ -166,7 +166,6 @@ namespace Ticket2U.API.Controllers
                 if (evento == null) return NotFound();
                 else
                 {
-                    _mapper.Map(eventObj, evento);
                     await _repository.UpdateEvent(evento);
                     return Created($"/Event/{eventObj.EventId}", evento);
                 }
