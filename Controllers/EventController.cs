@@ -116,7 +116,7 @@ namespace Ticket2U.API.Controllers
         {
             try
             {
-                var events = await _repository.GetEventsByUserId(userId);
+                var events = await _repository.GetApprovedEvents();
 
                 return Ok(events);
             }

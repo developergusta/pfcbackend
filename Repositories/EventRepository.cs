@@ -36,6 +36,11 @@ namespace Ticket2U.API.Repositories
             return await _context.Events.Include(x => x.Address).Include(x => x.Images).Include(x => x.Lots).ToListAsync();
         }
 
+        public async Task<IEnumerable<Event>> GetApprovedEvents()
+        {
+            return await _context.Events.Where( x => x.Status == "APROVADO" ).Include(x => x.Address).Include(x => x.Images).Include(x => x.Lots).ToListAsync();
+        }
+
         public async Task<Event> GetEvent(int id)
         {
             return await _context.Events.Include(x => x.Address).Include(x => x.Lots).ThenInclude( x => x.LotCategories ).FirstOrDefaultAsync(x => x.EventId == id);
