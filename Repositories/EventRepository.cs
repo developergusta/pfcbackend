@@ -183,5 +183,13 @@ namespace Ticket2U.API.Repositories
             tickets.ForEach( tkt => _context.Tickets.AddAsync(tkt) );
             await _context.SaveChangesAsync();
         } 
+
+        public async Task GetMostSoldEvents()
+        {
+            using (var context = new DataContext())
+            {
+                var result = context.Events.FromSqlRaw("SELECT ");
+            }
+        }
     }
 }
