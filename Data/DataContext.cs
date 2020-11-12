@@ -21,13 +21,7 @@ namespace Ticket2U.API.Data
             UseNpgsql("Server=lallah.db.elephantsql.com;Port=5432;Database=myvpljle;Uid=myvpljle;Password=esQpIE8p5y-tE5o5PlQutwpKfmkpg3_N");
         } 
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder){
-            // modelBuilder.Entity<EventUser>(entity => 
-            // {
-            //     entity.HasKey(e => new {e.TicketId ,e.EventId, e.UserId});
-            //     entity.Property( t => t.TicketId )
-            //         .ValueGeneratedOnAdd();
-            // });
+        protected override void OnModelCreating(ModelBuilder modelBuilder){           
             
             modelBuilder.Entity<Login>(entity => 
             {

@@ -94,7 +94,7 @@ namespace Ticket2U.API.Controllers
         }
 
         
-        [Route("getByUserId/{userId}")]
+        [Route("EventsByUserId/{userId}")]
         [HttpGet]
         public async Task<IActionResult> GetEventsByUserId([FromBody] int userId)
         {

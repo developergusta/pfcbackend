@@ -8,6 +8,7 @@ using Ticket2U.API.Repositories;
 
 namespace Ticket2U.API.Controllers
 {
+    [Route("[controller]")]
     public class TicketController : Controller
     {
         private readonly UserRepository _UserRepository;
