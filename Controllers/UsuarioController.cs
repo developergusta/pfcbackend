@@ -57,7 +57,7 @@ namespace Ticket2U.API.Controllers
         [HttpPost]
         [Route("Login")]
         [AllowAnonymous]
-        public async Task<ActionResult<dynamic>> Authenticate([FromBody] User userObj)
+        public async Task<ActionResult<dynamic>> Authenticate(User userObj)
         {
             try
             {
@@ -82,7 +82,7 @@ namespace Ticket2U.API.Controllers
 
         [Route("")]
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] User user)
+        public async Task<IActionResult> Create(User user)
         {
             try
             {
@@ -153,7 +153,7 @@ namespace Ticket2U.API.Controllers
 
         [Route("Address/{UserId}")]
         [HttpPut]
-        public async Task<IActionResult> UpdateAddressesUser(int UserId, [FromBody] User userObj)
+        public async Task<IActionResult> UpdateAddressesUser(int UserId, User userObj)
         {
             try
             {
@@ -175,7 +175,7 @@ namespace Ticket2U.API.Controllers
 
         [Route("{UserId}")]
         [HttpPut]
-        public async Task<IActionResult> UpdateUser(int UserId, [FromBody] User userObj)
+        public async Task<IActionResult> UpdateUser(int UserId, User userObj)
         {
             try
             {
@@ -200,7 +200,7 @@ namespace Ticket2U.API.Controllers
 
         [Route("RecoverPass")]
         [HttpPost]
-        public async Task<IActionResult> RecoverPass([FromBody] string cpf)
+        public async Task<IActionResult> RecoverPass(string cpf)
         {
             try
             {
@@ -223,7 +223,7 @@ namespace Ticket2U.API.Controllers
 
         [Route("AlternPass")]
         [HttpPost]
-        public async Task<IActionResult> AlternPass([FromBody] User[] Users)
+        public async Task<IActionResult> AlternPass(User[] Users)
         {
             try
             {
@@ -251,28 +251,6 @@ namespace Ticket2U.API.Controllers
             return new string(Enumerable.Repeat(chars, length)
             .Select(s => s[random.Next(s.Length)]).ToArray());
         }
-
-        // [Route("BuyTicket")]
-        // [HttpPost]
-        // public async Task<IActionResult> BuyTicket([FromBody] Ticket ticket)
-        // {
-        //     try
-        //     {
-        //         var user = await _repository.GetUserById(ticket.User.UserId);
-
-        //         if (user == null) return NotFound();
-        //         else
-        //         {
-        //             await _repository.BuyTicket(ticket);
-        //             EmailService.recoverPass(user);
-        //             return this.StatusCode(StatusCodes.Status200OK, "Ingresso comprado com sucesso");
-        //         }
-        //     }
-        //     catch (Exception ex)
-        //     {
-        //         return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao comprar ingresso: {ex.Message}");
-        //     }
-        // }
-        
+                
     }
 }

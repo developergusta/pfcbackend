@@ -96,7 +96,7 @@ namespace Ticket2U.API.Controllers
         
         [Route("EventsByUserId/{userId}")]
         [HttpGet]
-        public async Task<IActionResult> GetEventsByUserId([FromBody] int userId)
+        public async Task<IActionResult> GetEventsByUserId(int userId)
         {
             try
             {
@@ -112,7 +112,7 @@ namespace Ticket2U.API.Controllers
 
         [Route("Approved")]
         [HttpGet]
-        public async Task<IActionResult> GetApprovedEvents([FromBody] int userId)
+        public async Task<IActionResult> GetApprovedEvents()
         {
             try
             {
@@ -128,7 +128,7 @@ namespace Ticket2U.API.Controllers
 
         [Route("NotApproved")]
         [HttpGet]
-        public async Task<IActionResult> GetNotApprovedEvents([FromBody] int userId)
+        public async Task<IActionResult> GetNotApprovedEvents()
         {
             try
             {
@@ -144,7 +144,7 @@ namespace Ticket2U.API.Controllers
 
         [Route("getByCategory/{category}")]
         [HttpGet]
-        public async Task<IActionResult> GetEventByCategory([FromBody] string category)
+        public async Task<IActionResult> GetEventByCategory( string category)
         {
             try
             {
@@ -162,7 +162,7 @@ namespace Ticket2U.API.Controllers
         [Route("")]
         [AllowAnonymous]
         [HttpPost]
-        public async Task<IActionResult> CreateEvent([FromBody] Event eventObj)
+        public async Task<IActionResult> CreateEvent(Event eventObj)
         {
             try
             {
@@ -184,7 +184,7 @@ namespace Ticket2U.API.Controllers
         [Route("AdminCreate")]
         [AllowAnonymous]
         [HttpPost]
-        public async Task<IActionResult> AdminCreateEvent([FromBody] Event eventObj)
+        public async Task<IActionResult> AdminCreateEvent(Event eventObj)
         {
             try
             {
@@ -205,7 +205,7 @@ namespace Ticket2U.API.Controllers
 
         [Route("{EventId}")]
         [HttpPut]
-        public async Task<IActionResult> UpdateEvent(int EventId, [FromBody] Event eventObj)
+        public async Task<IActionResult> UpdateEvent(int EventId, Event eventObj)
         {
             try
             {
@@ -276,38 +276,9 @@ namespace Ticket2U.API.Controllers
             };
         }
 
-        [Route("Upload")]
-        [HttpPost]
-        public async Task<IActionResult> Upload()
-        {
-            try
-            {
-                var file = Request.Form.Files[0];
-                var folderName = Path.Combine("Resources", "Images");
-                var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
-
-                if (file.Length > 0)
-                {
-                    var filename = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName;
-                    var fullPath = Path.Combine(pathToSave, filename.Replace("\"", " ").Trim());
-
-                    using (var stream = new FileStream(fullPath, FileMode.Create))
-                    {
-                        file.CopyTo(stream);
-                    }
-                }
-
-                return Ok();
-            }
-            catch (System.Exception)
-            {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, "Erro ao tentar realizar upload de imagem");
-            }
-        }
-
         [Route("Endereco")]
         [HttpPost]
-        public string Create([FromBody] Address address)
+        public string Create(Address address)
         {
             _repository.CreateAddress(address);
             return "Endereço salvo com sucesso";
