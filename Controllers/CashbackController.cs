@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Ticket2U.API.Models;
@@ -27,6 +28,21 @@ namespace Ticket2U.API.Controllers
             catch (Exception ex)
             {
                 return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao recuperar senha: {ex}");
+            }            
+        }
+
+        [Route("")]
+        [HttpPut]
+        [Authorize(Roles = "ADMINISTRADOR")]
+        public async Task<IActionResult> ApproveCashback(Ticket ticket)
+        {
+            try
+            {
+                return this.StatusCode(StatusCodes.Status200OK, "Reembolso Aprovado");
+            }
+            catch (Exception ex)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao alterar status do cashback: {ex}");
             }            
         }
     }

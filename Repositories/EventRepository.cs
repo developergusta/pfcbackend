@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Ticket2U.API.Data;
-using Microsoft.AspNetCore.Mvc;
 using Ticket2U.API.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
@@ -192,13 +191,6 @@ namespace Ticket2U.API.Repositories
         {
             _context.RemoveRange(entityArray);
         }
-
-        public async Task BuyTicket(List<Ticket> tickets)
-        {
-
-            tickets.ForEach( tkt => _context.Tickets.AddAsync(tkt));
-            await _context.SaveChangesAsync();
-        } 
 
         
         public async Task<IEnumerable<Event>> GetEventsToday()

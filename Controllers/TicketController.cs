@@ -13,10 +13,12 @@ namespace Ticket2U.API.Controllers
     {
         private readonly UserRepository _UserRepository;
         private readonly EventRepository _EventRepository;
-        public TicketController(UserRepository userRepository, EventRepository eventRepository)
+        private readonly TicketRepository _TicketRepository;
+        public TicketController(UserRepository userRepository, EventRepository eventRepository, TicketRepository ticketRepository)
         {
             _UserRepository = userRepository;
             _EventRepository = eventRepository;
+            _TicketRepository = ticketRepository;
         }
 
         [Route("Buy")]
@@ -40,7 +42,7 @@ namespace Ticket2U.API.Controllers
                     if (user.Credit > valTotal ){
                         return this.StatusCode(StatusCodes.Status500InternalServerError, "Saldo insuficiente");
                     }
-                    await _EventRepository.BuyTicket(tickets);
+                    await _TicketRepository.BuyTicket(tickets);
                     await _UserRepository.UpdateSaldo(valTotal, user);
                     return Created($"/Ticket/{tickets[0].UserId}", tickets);
                 }
