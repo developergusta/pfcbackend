@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -64,13 +65,62 @@ namespace Ticket2U.API.Controllers
             try
             {
                 var user = await _UserRepository.GetUserById(id);
-                var result = await _UserRepository.GetTicketsByUser(user);
+                if (user != null)
+                {
+                var result = await _UserRepository.GetTicketsByUser(id);
                 return Ok(result);
+                }
+                return this.StatusCode(StatusCodes.Status500InternalServerError, "Não foi possível localizar o usuário");
             }
             catch (System.Exception)
             {
                 return this.StatusCode(StatusCodes.Status500InternalServerError, "Erro na compra de ingressos");
             }
         }
+
+        [Route("Cashback")]
+        [HttpPost]
+        public async Task<IActionResult> RequestCashback(Ticket ticket)
+        {
+            try
+            {
+                return this.StatusCode(StatusCodes.Status200OK, "Reembolso solicitado");
+            }
+            catch (Exception ex)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao recuperar senha: {ex}");
+            }            
+        }
+
+        [Route("Cashback/0")]
+        [HttpPut]
+        [Authorize(Roles = "ADMINISTRADOR")]
+        public async Task<IActionResult> DenyCashback(Ticket ticket)
+        {
+            try
+            {
+                return this.StatusCode(StatusCodes.Status200OK, "Reembolso Negado");
+            }
+            catch (Exception ex)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao alterar status do cashback: {ex}");
+            }            
+        }
+
+        [Route("Cashback/1")]
+        [HttpPut]
+        [Authorize(Roles = "ADMINISTRADOR")]
+        public async Task<IActionResult> ApproveCashback(Ticket ticket)
+        {
+            try
+            {
+                return this.StatusCode(StatusCodes.Status200OK, "Reembolso Aprovado");
+            }
+            catch (Exception ex)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao alterar status do cashback: {ex}");
+            }            
+        }
+        
     }
 }

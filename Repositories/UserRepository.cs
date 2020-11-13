@@ -163,9 +163,9 @@ namespace Ticket2U.API.Repositories
             return await _context.Addresses.ToListAsync();
         }
 
-        public async Task<IEnumerable<Ticket>> GetTicketsByUser(User user)
+        public async Task<IEnumerable<Ticket>> GetTicketsByUser(int id)
         {
-            IQueryable<Ticket> query = _context.Tickets.Where(x => x.UserId == user.UserId).Include(x => x.Event).Include(x => x.Event.Address);
+            IQueryable<Ticket> query = _context.Tickets.Where(x => x.UserId == id).Include(x => x.Event).Include(x => x.Event.Address);
             return await query.ToListAsync();
         }
 
