@@ -57,7 +57,7 @@ namespace Ticket2U.API.Controllers
         [HttpPost]
         [Route("Login")]
         [AllowAnonymous]
-        public async Task<ActionResult<dynamic>> Authenticate(User userObj)
+        public async Task<ActionResult<dynamic>> Authenticate([FromBody]User userObj)
         {
             try
             {
