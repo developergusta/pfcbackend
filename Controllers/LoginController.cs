@@ -11,6 +11,7 @@ using System.Linq;
 
 namespace Ticket2U.API.Controllers
 {
+    [Route("[controller]")]
     public class LoginController : Controller
     {
         private readonly UserRepository _repository;
