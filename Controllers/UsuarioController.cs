@@ -50,7 +50,7 @@ namespace Ticket2U.API.Controllers
 
         [Route("")]
         [HttpPost]
-        public async Task<IActionResult> Create(User user)
+        public async Task<IActionResult> Create([FromBody]User user)
         {
             try
             {
@@ -114,7 +114,7 @@ namespace Ticket2U.API.Controllers
 
         [Route("Address/{UserId}")]
         [HttpPut]
-        public async Task<IActionResult> UpdateAddressesUser(int UserId, User userObj)
+        public async Task<IActionResult> UpdateAddressesUser(int UserId,[FromBody] User userObj)
         {
             try
             {
@@ -136,7 +136,7 @@ namespace Ticket2U.API.Controllers
 
         [Route("{UserId}")]
         [HttpPut]
-        public async Task<IActionResult> UpdateUser(int UserId, User userObj)
+        public async Task<IActionResult> UpdateUser(int UserId,[FromBody] User userObj)
         {
             try
             {
