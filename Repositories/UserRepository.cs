@@ -129,7 +129,7 @@ namespace Ticket2U.API.Repositories
 
         public async Task<User> Login(string email, string password)
         {
-            IQueryable<User> query = _context.Users.Where(x => x.Login.Email.ToLower() == email.ToLower() && x.Login.Pass == password).Include(x => x.Login).Include(x => x.Addresses).Include(x => x.Phones).Include(x => x.Tickets).Include(x => x.Image);
+            IQueryable<User> query = _context.Users.Where(x => x.Login.Email.ToLower() == email.ToLower() && x.Login.Pass == password).Include(x => x.Login).Include(x => x.Addresses).Include(x => x.Phones).Include(x => x.Tickets).Include(x => x.Image).Include( x => x.Events);
 
             return await query.FirstOrDefaultAsync();
         }

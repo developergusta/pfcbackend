@@ -20,6 +20,36 @@ namespace Ticket2U.API.Controllers
             _repository = repository;
         }
 
+
+        [Route("")]
+        [AllowAnonymous]
+        [HttpPost]
+        public async Task<IActionResult> CreateEvent(Event eventObj)
+        {
+            try
+            {
+                eventObj.Status = "PENDENTE";
+                if(eventObj.Lots == null)
+                {
+                    var lot = new Lot();
+                    var lotCatg = new LotCategory();
+                    eventObj.Lots.Add(lot);
+                    eventObj.Lots[0].LotCategories.Add(lotCatg);
+                }
+                bool eventResult = await _repository.CreateEvent(eventObj);
+                if (eventResult)
+                {
+                    return Created($"/Event/{eventObj.EventId}", eventObj);
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Erro: {ex.Message}");
+            }
+
+            return BadRequest();
+        }
+
         [Route("")]
         [HttpGet]
         public async Task<IActionResult> GetAllEvents()
@@ -159,27 +189,6 @@ namespace Ticket2U.API.Controllers
         }
 
 
-        [Route("")]
-        [AllowAnonymous]
-        [HttpPost]
-        public async Task<IActionResult> CreateEvent(Event eventObj)
-        {
-            try
-            {
-                eventObj.Status = "PENDENTE";
-                bool eventResult = await _repository.CreateEvent(eventObj);
-                if (eventResult)
-                {
-                    return Created($"/Event/{eventObj.EventId}", eventObj);
-                }
-            }
-            catch (Exception ex)
-            {
-                return BadRequest($"Erro: {ex.Message}");
-            }
-
-            return BadRequest();
-        }
 
         [Route("AdminCreate")]
         [AllowAnonymous]
