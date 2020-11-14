@@ -18,7 +18,6 @@ namespace Ticket2U.API.Models
         public string Description { get; set; }
         public DateTime DateStart { get; set; }
         public DateTime DateEnd { get; set; }
-        public decimal Price { get; set; }  
         public string Status { get; set; }
         public int? UserId { get; set; }
         [ForeignKey("UserId")]

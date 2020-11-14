@@ -12,7 +12,6 @@ namespace Ticket2U.API.Models
         
         [Key]
         public int LotId { get; set; }
-        public decimal Price { get; set; }
         public DateTime? DateStart { get; set; }
         public DateTime? DateEnd { get; set; }
         [ForeignKey("EventId")]

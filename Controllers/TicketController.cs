@@ -79,8 +79,8 @@ namespace Ticket2U.API.Controllers
         }
 
         [Route("Cashback")]
-        [HttpPost]
-        public async Task<IActionResult> RequestCashback(Ticket ticket)
+        [HttpPut]
+        public async Task<IActionResult> RequestCashback([FromBody]Ticket ticket)
         {
             try
             {
@@ -95,7 +95,7 @@ namespace Ticket2U.API.Controllers
         [Route("Cashback/0")]
         [HttpPut]
         [Authorize(Roles = "ADMINISTRADOR")]
-        public async Task<IActionResult> DenyCashback(Ticket ticket)
+        public async Task<IActionResult> DenyCashback([FromBody]Ticket ticket)
         {
             try
             {

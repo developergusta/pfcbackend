@@ -93,7 +93,6 @@ namespace Ticket2U.API.Repositories
 
                 eventLocal.TitleEvent = eventObj.TitleEvent;
                 eventLocal.Description = eventObj.Description;
-                eventLocal.Price = eventObj.Price;
                 eventLocal.DateStart = eventObj.DateStart;
                 eventLocal.DateEnd = eventObj.DateEnd;
 
@@ -123,7 +122,6 @@ namespace Ticket2U.API.Repositories
                         var lot = eventLocal.Lots.Find( x => x.LotId == item.LotId );
                         lot.DateStart = item.DateStart;
                         lot.DateEnd = item.DateEnd;
-                        lot.Price = item.Price;
 
                         foreach (var lotCatg in lot.LotCategories)
                         {

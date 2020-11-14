@@ -24,7 +24,7 @@ namespace Ticket2U.API.Controllers
         [Route("")]
         [AllowAnonymous]
         [HttpPost]
-        public async Task<IActionResult> CreateEvent(Event eventObj)
+        public async Task<IActionResult> CreateEvent([FromBody]Event eventObj)
         {
             try
             {
