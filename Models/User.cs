@@ -12,8 +12,8 @@ namespace Ticket2U.API.Models
         public String Name { get; set; }
         public DateTime? DateBirth { get; set; }
         public DateTime RegisterTime { get; set; }
-        public string? Cpf { get; set; }
-        public string? Rg { get; set; }
+        public string Cpf { get; set; }
+        public string Rg { get; set; }
         public string Status { get; set; }
         public decimal? Credit { get; set; }
         public int? ImageId { get; set; }
@@ -21,7 +21,7 @@ namespace Ticket2U.API.Models
         public Image Image { get; set; }
         public int? LoginId { get; set; }            
         [ForeignKey("LoginId")]
-        public Login? Login { get; set; }
+        public Login Login { get; set; }
         /*public int? EventId { get; set; }
         [ForeignKey("EventId")]
         public Event Event { get; set; }*/

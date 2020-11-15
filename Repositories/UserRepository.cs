@@ -52,11 +52,11 @@ namespace Ticket2U.API.Repositories
         {
             try
             {
-                var userLocal = _context.Users    
+                var userLocal = _context.Users
                     .Where(x => x.UserId == user.UserId)
                     .Include(x => x.Addresses)
-                    .Include( x => x.Phones)
-                    .Include( x => x.Events )
+                    .Include(x => x.Phones)
+                    .Include(x => x.Events)
                     .Include(x => x.Image)
                     .FirstOrDefault();
 
@@ -66,17 +66,17 @@ namespace Ticket2U.API.Repositories
                 userLocal.Login.Email = user.Login.Email;
                 userLocal.DateBirth = user.DateBirth;
                 userLocal.Image.Src = user.Image.Src;
-                
+
                 foreach (var item in user.Addresses)
                 {
-                    if(item.AddressId == 0)
+                    if (item.AddressId == 0)
                     {
                         item.UserId = user.UserId;
                         await _context.Addresses.AddAsync(item);
-                    } 
+                    }
                     else
                     {
-                        var addr = userLocal.Addresses.Find( x => x.AddressId == item.AddressId );
+                        var addr = userLocal.Addresses.Find(x => x.AddressId == item.AddressId);
                         addr.City = item.City;
                         addr.Complement = item.Complement;
                         addr.Country = item.Country;
@@ -89,19 +89,19 @@ namespace Ticket2U.API.Repositories
 
                 foreach (var item in user.Phones)
                 {
-                    if(item.PhoneId == 0)
+                    if (item.PhoneId == 0)
                     {
                         item.UserId = user.UserId;
                         await _context.Phones.AddAsync(item);
-                    } 
+                    }
                     else
                     {
-                        var phon = userLocal.Phones.Find( x => x.PhoneId == item.PhoneId );
+                        var phon = userLocal.Phones.Find(x => x.PhoneId == item.PhoneId);
                         phon.Type = item.Type;
                         phon.Number = item.Number;
                     }
                 }
-                
+
                 await _context.SaveChangesAsync();
 
             }
@@ -130,19 +130,19 @@ namespace Ticket2U.API.Repositories
 
         public async Task DeleteAddressUser(Address addr)
         {
-            var address = await _context.Addresses.Where( x => x.AddressId == addr.AddressId ).FirstOrDefaultAsync();
+            var address = await _context.Addresses.Where(x => x.AddressId == addr.AddressId).FirstOrDefaultAsync();
             _context.Addresses.Remove(address);
         }
 
         public async Task DeletePhoneUser(Phone phonObj)
         {
-            var phone = await _context.Phones.Where( x => x.PhoneId == phonObj.PhoneId ).FirstOrDefaultAsync();
+            var phone = await _context.Phones.Where(x => x.PhoneId == phonObj.PhoneId).FirstOrDefaultAsync();
             _context.Phones.Remove(phone);
         }
 
         public async Task<User> Login(string email, string password)
         {
-            IQueryable<User> query = _context.Users.Where(x => x.Login.Email.ToLower() == email.ToLower() && x.Login.Pass == password).Include(x => x.Login).Include(x => x.Addresses).Include(x => x.Phones).Include(x => x.Tickets).Include(x => x.Image).Include( x => x.Events);
+            IQueryable<User> query = _context.Users.Where(x => x.Login.Email.ToLower() == email.ToLower() && x.Login.Pass == password).Include(x => x.Login).Include(x => x.Addresses).Include(x => x.Phones).Include(x => x.Tickets).Include(x => x.Image).Include(x => x.Events);
 
             return await query.FirstOrDefaultAsync();
         }
@@ -189,11 +189,12 @@ namespace Ticket2U.API.Repositories
 
         public async Task UpdateSaldo(decimal valTotal, User userObj)
         {
-            var userLocal = _context.Users    
-                    .Where(x => x.UserId == userObj.UserId)                    
-                    .FirstOrDefault();
+            var userLocal = await _context.Users
+                    .Where(x => x.UserId == userObj.UserId)
+                    .FirstOrDefaultAsync();
 
-                userLocal.Credit = (userLocal.Credit-valTotal);
+            userLocal.Credit = (userLocal.Credit - valTotal);
+            await _context.SaveChangesAsync();
         }
     }
 }
