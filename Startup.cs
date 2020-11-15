@@ -37,6 +37,7 @@ namespace Ticket2U.API
             services.AddScoped<DataContext, DataContext>();
             services.AddTransient<EventRepository, EventRepository>();
             services.AddTransient<UserRepository, UserRepository>();
+            services.AddTransient<TicketRepository, TicketRepository>();
             services.AddTransient<EmailService, EmailService>();
             services.AddSwaggerGen( gen => 
             {

@@ -71,7 +71,7 @@ namespace Ticket2U.API.Repositories
 
         public async Task<LotCategory> GetLotCategoryById(int lotCatgId)
         {
-            LotCategory lotCatg = await _context.LotCategories.Where(x => x.LotCategoryId == x.LotCategoryId).FirstOrDefaultAsync();
+            LotCategory lotCatg = await _context.LotCategories.Where(x => x.LotCategoryId == lotCatgId).FirstOrDefaultAsync();
             return lotCatg;
         }
         public async Task<IEnumerable<Event>> GetEventsByUserId(int userId)

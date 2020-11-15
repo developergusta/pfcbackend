@@ -85,7 +85,7 @@ namespace Ticket2U.API.Controllers
             catch (Exception ex)
             {
                 Console.Write($"Erro: {ex}");
-                return this.StatusCode(StatusCodes.Status500InternalServerError, "Erro na listagem de eventos");
+                return this.StatusCode(StatusCodes.Status500InternalServerError, "Erro na listagem de evento");
             }
         }
 

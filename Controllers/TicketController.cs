@@ -15,6 +15,7 @@ namespace Ticket2U.API.Controllers
         private readonly UserRepository _UserRepository;
         private readonly EventRepository _EventRepository;
         private readonly TicketRepository _TicketRepository;
+
         public TicketController(UserRepository userRepository, EventRepository eventRepository, TicketRepository ticketRepository)
         {
             _UserRepository = userRepository;
@@ -36,13 +37,14 @@ namespace Ticket2U.API.Controllers
                     decimal valTotal = 0;
                     foreach (var item in tickets)
                     {
+                        item.RegisterTime = DateTime.UtcNow;
                         int idCatg = item.LotCategoryId.GetValueOrDefault();
                         var lotcatg = await _EventRepository.GetLotCategoryById(idCatg);
                         valTotal = valTotal + lotcatg.PriceCategory;
                     }
-                    if (user.Credit > valTotal ){
+                    if (valTotal > user.Credit){
                         return this.StatusCode(StatusCodes.Status500InternalServerError, "Saldo insuficiente");
-                    }
+                    }                    
                     await _TicketRepository.BuyTicket(tickets);
                     await _UserRepository.UpdateSaldo(valTotal, user);
                     return Created($"/Ticket/{tickets[0].UserId}", tickets);
