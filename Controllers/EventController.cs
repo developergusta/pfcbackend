@@ -37,8 +37,10 @@ namespace Ticket2U.API.Controllers
                 if (eventObj.Lots == null)
                 {
                     var lot = new Lot();
+                    lot.DateStart = eventObj.DateStart;
+                    lot.DateEnd = eventObj.DateEnd;
+                    eventObj.Lots.Add(lot);                    
                     var lotCatg = new LotCategory();
-                    eventObj.Lots.Add(lot);
                     eventObj.Lots[0].LotCategories.Add(lotCatg);
                 }
                 bool eventResult = await _repository.CreateEvent(eventObj);
@@ -242,7 +244,7 @@ namespace Ticket2U.API.Controllers
 
         [Route("Approve/{EventId}")]
         [HttpPut]
-        public async Task<IActionResult> ApproveEvent(int EventId, Event eventObj)
+        public async Task<IActionResult> ApproveEvent(int EventId, [FromBody]Event eventObj)
         {
             try
             {
@@ -266,7 +268,7 @@ namespace Ticket2U.API.Controllers
 
         [Route("Deny/{EventId}")]
         [HttpPut]
-        public async Task<IActionResult> DenyEvent(int EventId, Event eventObj)
+        public async Task<IActionResult> DenyEvent(int EventId, [FromBody] Event eventObj)
         {
             try
             {

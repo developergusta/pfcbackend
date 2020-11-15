@@ -92,7 +92,7 @@ namespace Ticket2U.API.Controllers
             }            
         }
 
-        #region ADMINSITRADOR
+        #region ADMINSTRADOR
         [Route("Cashback/0")]
         [HttpPut]
         [Authorize(Roles = "ADMINISTRADOR")]
