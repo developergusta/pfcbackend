@@ -15,7 +15,7 @@ namespace Ticket2U.API.Controllers
     public class LoginController : Controller
     {
         private readonly UserRepository _repository;
-        private readonly EmailService _email;
+        private EmailService _email;
 
         public LoginController(UserRepository repository, EmailService email)
         {

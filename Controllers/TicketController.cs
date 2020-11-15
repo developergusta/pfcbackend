@@ -79,7 +79,7 @@ namespace Ticket2U.API.Controllers
         }
 
         [Route("Cashback")]
-        [HttpPut]
+        [HttpPost]
         public async Task<IActionResult> RequestCashback([FromBody]Ticket ticket)
         {
             try

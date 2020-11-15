@@ -12,6 +12,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Ticket2U.API.Data;
 using Ticket2U.API.Repositories;
+using Ticket2U.API.Services;
 
 namespace Ticket2U.API
 {
@@ -36,6 +37,7 @@ namespace Ticket2U.API
             services.AddScoped<DataContext, DataContext>();
             services.AddTransient<EventRepository, EventRepository>();
             services.AddTransient<UserRepository, UserRepository>();
+            services.AddTransient<EmailService, EmailService>();
             services.AddSwaggerGen( gen => 
             {
                 gen.SwaggerDoc("v1.0", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "Ticket2U API", Version = "v1.0" });

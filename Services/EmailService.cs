@@ -25,14 +25,14 @@ namespace Ticket2U.API.Services
         public async Task eventApproved(User user, Event evento)
         {
             string body = $"Seu evento {evento.TitleEvent} foi aprovado por um administrador! Acesse a plataforma TICKET2U para conferir!";
-            string subject = $"{evento.TitleEvent} - aprovado";
+            string subject = $"{evento.TitleEvent} - Aprovado";
             await enviaEmail(body, subject, user.Login.Email, user.Name);
         }
 
         public async Task eventDenied(User user, Event evento)
         {
-            string body = $"Seu evento {evento.TitleEvent} foi aprovado por um administrador! Acesse a plataforma TICKET2U para conferir!";
-            string subject = $"{evento.TitleEvent} - aprovado";
+            string body = $"Seu evento {evento.TitleEvent} foi negado por um administrador! Caso queira entender melhor o motivo, entre em contato conosco!";
+            string subject = $"{evento.TitleEvent} - Negado";
             await enviaEmail(body, subject, user.Login.Email, user.Name);
         }
 
