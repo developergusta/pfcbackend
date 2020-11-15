@@ -110,7 +110,8 @@ namespace Ticket2U.API.Repositories
                 Console.WriteLine($"Erro: {ex}");
             }
         }
-        
+
+
         public async Task RemoveUser(User user)
         {
             try
@@ -125,6 +126,18 @@ namespace Ticket2U.API.Repositories
             {
                 Console.WriteLine($"Erro: {ex}");
             }
+        }
+
+        public async Task DeleteAddressUser(Address addr)
+        {
+            var address = await _context.Addresses.Where( x => x.AddressId == addr.AddressId ).FirstOrDefaultAsync();
+            _context.Addresses.Remove(address);
+        }
+
+        public async Task DeletePhoneUser(Phone phonObj)
+        {
+            var phone = await _context.Phones.Where( x => x.PhoneId == phonObj.PhoneId ).FirstOrDefaultAsync();
+            _context.Phones.Remove(phone);
         }
 
         public async Task<User> Login(string email, string password)

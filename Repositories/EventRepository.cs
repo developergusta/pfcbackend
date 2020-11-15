@@ -37,17 +37,22 @@ namespace Ticket2U.API.Repositories
 
         public async Task<IEnumerable<Event>> GetApprovedEvents()
         {
-            return await _context.Events.Where( x => x.Status == "APROVADO" ).Include(x => x.Address).Include(x => x.Images).Include(x => x.Lots).ToListAsync();
+            return await _context.Events.Where(x => x.Status == "APROVADO").Include(x => x.Address).Include(x => x.Images).Include(x => x.Lots).ToListAsync();
         }
 
-        public async Task<IEnumerable<Event>> GetNotApprovedEvents()
+        public async Task<IEnumerable<Event>> GetPendingEvents()
         {
-            return await _context.Events.Where( x => x.Status != "APROVADO" ).Include(x => x.Address).Include(x => x.Images).Include(x => x.Lots).ToListAsync();
+            return await _context.Events.Where(x => x.Status == "PENDENTE").Include(x => x.Address).Include(x => x.Images).Include(x => x.Lots).ToListAsync();
+        }
+
+        public async Task<IEnumerable<Event>> GetDeniedEvents()
+        {
+            return await _context.Events.Where(x => x.Status == "NEGADO").Include(x => x.Address).Include(x => x.Images).Include(x => x.Lots).ToListAsync();
         }
 
         public async Task<Event> GetEvent(int id)
         {
-            return await _context.Events.Include(x => x.Address).Include( x => x.Images ).Include(x => x.Lots).ThenInclude( x => x.LotCategories ).FirstOrDefaultAsync(x => x.EventId == id);
+            return await _context.Events.Include(x => x.Address).Include(x => x.Images).Include(x => x.Lots).ThenInclude(x => x.LotCategories).FirstOrDefaultAsync(x => x.EventId == id);
         }
 
 
@@ -66,7 +71,7 @@ namespace Ticket2U.API.Repositories
 
         public async Task<LotCategory> GetLotCategoryById(int lotCatgId)
         {
-            LotCategory lotCatg = await _context.LotCategories.Where( x => x.LotCategoryId == x.LotCategoryId).FirstOrDefaultAsync();
+            LotCategory lotCatg = await _context.LotCategories.Where(x => x.LotCategoryId == x.LotCategoryId).FirstOrDefaultAsync();
             return lotCatg;
         }
         public async Task<IEnumerable<Event>> GetEventsByUserId(int userId)
@@ -84,7 +89,7 @@ namespace Ticket2U.API.Repositories
             try
             {
                 var eventLocal = await _context.Events
-                    .Where(e => e.EventId == eventObj.AddressId)
+                    .Where(e => e.EventId == eventObj.EventId)
                     .Include(e => e.Images)
                     .Include(e => e.Address)
                     .Include(e => e.Lots)
@@ -103,10 +108,10 @@ namespace Ticket2U.API.Repositories
                 eventLocal.Address.State = eventObj.Address.State;
                 eventLocal.Address.Street = eventObj.Address.Street;
                 eventLocal.Address.ZipCode = eventObj.Address.ZipCode;
-                
+
                 foreach (var item in eventLocal.Lots)
                 {
-                    if(item.LotId == 0)
+                    if (item.LotId == 0)
                     {
                         item.EventId = eventObj.EventId;
                         await _context.Lots.AddAsync(item);
@@ -116,10 +121,10 @@ namespace Ticket2U.API.Repositories
                             itemCatg.LotId = item.LotId;
                             await _context.Lots.AddAsync(item);
                         }
-                    } 
+                    }
                     else
                     {
-                        var lot = eventLocal.Lots.Find( x => x.LotId == item.LotId );
+                        var lot = eventLocal.Lots.Find(x => x.LotId == item.LotId);
                         lot.DateStart = item.DateStart;
                         lot.DateEnd = item.DateEnd;
 
@@ -132,13 +137,13 @@ namespace Ticket2U.API.Repositories
                             }
                             else
                             {
-                                var existLotCatg = lot.LotCategories.Find( y => y.LotCategoryId == lotCatg.LotCategoryId);
+                                var existLotCatg = lot.LotCategories.Find(y => y.LotCategoryId == lotCatg.LotCategoryId);
                                 existLotCatg.Desc = lotCatg.Desc;
                                 existLotCatg.PriceCategory = lotCatg.PriceCategory;
                             }
                         }
                     }
-                }                
+                }
 
                 await _context.SaveChangesAsync();
             }
@@ -190,12 +195,48 @@ namespace Ticket2U.API.Repositories
             _context.RemoveRange(entityArray);
         }
 
-        
+
         public async Task<IEnumerable<Event>> GetEventsToday()
         {
             DateTime now = DateTime.UtcNow;
-            var result = await _context.Events.Where( evt => now.Month == evt.DateStart.Month && now.Year == evt.DateStart.Year && evt.DateStart.Day == now.Day ).Include( x => x.Images).Include( x => x.Address).ToListAsync();
+            var result = await _context.Events.Where(evt => now.Month == evt.DateStart.Month && now.Year == evt.DateStart.Year && evt.DateStart.Day == now.Day).Include(x => x.Images).Include(x => x.Address).ToListAsync();
             return result;
+        }
+
+        public async Task ApproveEvent(Event evento)
+        {
+            try
+            {
+                var eventLocal = await _context.Events
+                    .Where(e => e.EventId == evento.EventId)
+                    .FirstOrDefaultAsync();
+
+                eventLocal.Status = "APROVADO";
+
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Erro: {ex}");
+            }
+        }
+
+        public async Task DenyEvent(Event evento)
+        {
+            try
+            {
+                var eventLocal = await _context.Events
+                    .Where(e => e.EventId == evento.EventId)
+                    .FirstOrDefaultAsync();
+
+                eventLocal.Status = "NEGADO";
+
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Erro: {ex}");
+            }
         }
     }
 }

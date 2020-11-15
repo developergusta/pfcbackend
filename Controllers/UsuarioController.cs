@@ -17,21 +17,7 @@ namespace Ticket2U.API.Controllers
             _repository = repository;
         }
 
-        [Route("")]
-        [HttpGet]
-        [Authorize(Roles = "ADMINISTRADOR")]
-        public async Task<IActionResult> GetAllUsers()
-        {
-            try
-            {
-                var users = await _repository.GetAllUsers();
-                return Ok(users);
-            }
-            catch (System.Exception)
-            {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, "Erro na listagem de usuários");
-            }
-        }
+        
 
         [Route("{id}")]
         [HttpGet]
@@ -75,6 +61,22 @@ namespace Ticket2U.API.Controllers
             }
         }
 
+        [Route("")]
+        [HttpGet]
+        [Authorize(Roles = "ADMINISTRADOR")]
+        public async Task<IActionResult> GetAllUsers()
+        {
+            try
+            {
+                var users = await _repository.GetAllUsers();
+                return Ok(users);
+            }
+            catch (System.Exception)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError, "Erro na listagem de usuários");
+            }
+        }
+
         [Route("Endereco")]
         [Authorize(Roles = "Administrador")]
         [HttpGet]
@@ -111,28 +113,7 @@ namespace Ticket2U.API.Controllers
                 return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao atualizar evento: {ex}");
             }
         }
-
-        [Route("Address/{UserId}")]
-        [HttpPut]
-        public async Task<IActionResult> UpdateAddressesUser(int UserId,[FromBody] User userObj)
-        {
-            try
-            {
-                var user = await _repository.GetUserById(UserId);
-                if (user == null)
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    return Created($"/Usuario/Address/{user.UserId}", userObj);
-                }
-            }
-            catch (Exception ex)
-            {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao atualizar usuário: {ex}");
-            }
-        }
+        
 
         [Route("{UserId}")]
         [HttpPut]
@@ -156,6 +137,104 @@ namespace Ticket2U.API.Controllers
             catch (Exception ex)
             {
                 return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao atualizar usuário: {ex}");
+            }
+        }
+
+        [Route("Ban/{UserId}")]
+        [Authorize(Roles = "Administrador")]
+        [HttpPut]
+        public async Task<IActionResult> Banir(int UserId,[FromBody] User userObj)
+        {
+            try
+            {
+                var user = await _repository.GetUserById(UserId);
+
+                if (user == null)
+                {
+                    return NotFound();
+                }
+                else
+                {                    
+                    await _repository.UpdateUser(userObj);                    
+
+                    return Created($"/Usuario/{user.UserId}", userObj);
+                }
+            }
+            catch (Exception ex)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao atualizar usuário: {ex}");
+            }
+        }
+
+        [Route("UndoBan/{UserId}")]
+        [Authorize(Roles = "Administrador")]
+        [HttpPut]
+        public async Task<IActionResult> Reativar(int UserId,[FromBody] User userObj)
+        {
+            try
+            {
+                var user = await _repository.GetUserById(UserId);
+
+                if (user == null)
+                {
+                    return NotFound();
+                }
+                else
+                {                    
+                    await _repository.UpdateUser(userObj);                    
+
+                    return Created($"/Usuario/{user.UserId}", userObj);
+                }
+            }
+            catch (Exception ex)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao atualizar usuário: {ex}");
+            }
+        }
+
+        [Route("Address/Delete/{UserId}")]
+        [HttpDelete]
+        public async Task<IActionResult> DeleteAddressUser(int UserId,[FromBody] Address addr)
+        {
+            try
+            {
+                var user = await _repository.GetUserById(UserId);
+                if (user == null)
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    await _repository.DeleteAddressUser(addr);
+                    return Ok(addr);
+                }
+            }
+            catch (Exception ex)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao deletar endereço: {ex.Message}");
+            }
+        }
+
+        [Route("Phone/Delete/{UserId}")]
+        [HttpDelete]
+        public async Task<IActionResult> DeletePhoneUser(int UserId,[FromBody] Phone phone)
+        {
+            try
+            {
+                var user = await _repository.GetUserById(UserId);
+                if (user == null)
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    await _repository.DeletePhoneUser(phone);
+                    return Ok(phone);
+                }
+            }
+            catch (Exception ex)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao deletar endereço: {ex.Message}");
             }
         }
 

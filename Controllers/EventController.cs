@@ -156,13 +156,29 @@ namespace Ticket2U.API.Controllers
             }
         }
 
-        [Route("NotApproved")]
+        [Route("Pending")]
         [HttpGet]
         public async Task<IActionResult> GetNotApprovedEvents()
         {
             try
             {
-                var events = await _repository.GetNotApprovedEvents();
+                var events = await _repository.GetPendingEvents();
+
+                return Ok(events);
+            }
+            catch (Exception ex)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao retornar eventos: {ex}");
+            }
+        }
+
+        [Route("Denied")]
+        [HttpGet]
+        public async Task<IActionResult> GetDenidEvents()
+        {
+            try
+            {
+                var events = await _repository.GetDeniedEvents();
 
                 return Ok(events);
             }
@@ -224,6 +240,48 @@ namespace Ticket2U.API.Controllers
                 else
                 {
                     await _repository.UpdateEvent(evento);
+                    return Created($"/Event/{eventObj.EventId}", evento);
+                }
+            }
+            catch (Exception ex)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao atualizar evento: {ex}");
+            }
+        }
+
+        [Route("Approve/{EventId}")]
+        [HttpPut]
+        public async Task<IActionResult> ApproveEvent(int EventId, Event eventObj)
+        {
+            try
+            {
+                var evento = await _repository.GetEvent(EventId);
+
+                if (evento == null) return NotFound();
+                else
+                {
+                    await _repository.ApproveEvent(evento);
+                    return Created($"/Event/{eventObj.EventId}", evento);
+                }
+            }
+            catch (Exception ex)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao atualizar evento: {ex}");
+            }
+        }
+
+        [Route("Deny/{EventId}")]
+        [HttpPut]
+        public async Task<IActionResult> DenyEvent(int EventId, Event eventObj)
+        {
+            try
+            {
+                var evento = await _repository.GetEvent(EventId);
+
+                if (evento == null) return NotFound();
+                else
+                {
+                    await _repository.DenyEvent(evento);
                     return Created($"/Event/{eventObj.EventId}", evento);
                 }
             }
