@@ -92,6 +92,7 @@ namespace Ticket2U.API.Controllers
             }            
         }
 
+        #region ADMINSITRADOR
         [Route("Cashback/0")]
         [HttpPut]
         [Authorize(Roles = "ADMINISTRADOR")]
@@ -121,6 +122,8 @@ namespace Ticket2U.API.Controllers
                 return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao alterar status do cashback: {ex}");
             }            
         }
+
+        #endregion
         
     }
 }

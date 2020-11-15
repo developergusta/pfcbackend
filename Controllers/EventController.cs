@@ -24,12 +24,12 @@ namespace Ticket2U.API.Controllers
         [Route("")]
         [AllowAnonymous]
         [HttpPost]
-        public async Task<IActionResult> CreateEvent([FromBody]Event eventObj)
+        public async Task<IActionResult> CreateEvent([FromBody] Event eventObj)
         {
             try
             {
                 eventObj.Status = "PENDENTE";
-                if(eventObj.Lots == null)
+                if (eventObj.Lots == null)
                 {
                     var lot = new Lot();
                     var lotCatg = new LotCategory();
@@ -48,22 +48,6 @@ namespace Ticket2U.API.Controllers
             }
 
             return BadRequest();
-        }
-
-        [Route("")]
-        [HttpGet]
-        public async Task<IActionResult> GetAllEvents()
-        {
-            try
-            {
-                var events = await _repository.GetAllEvents();
-                return Ok(events);
-            }
-            catch (Exception ex)
-            {
-                Console.Write($"Erro: {ex}");
-                return this.StatusCode(StatusCodes.Status500InternalServerError, "Erro na listagem de eventos");
-            }
         }
 
         [Route("Today")]
@@ -108,8 +92,9 @@ namespace Ticket2U.API.Controllers
                 DateTime now = DateTime.UtcNow;
                 var i = 0;
                 foreach (var lot in evento.Lots)
-                {      
-                    if(lot.DateEnd > now || lot.DateStart < now){
+                {
+                    if (lot.DateEnd > now || lot.DateStart < now)
+                    {
                         evento.Lots.RemoveAt(i);
                     }
                     i++;
@@ -123,8 +108,9 @@ namespace Ticket2U.API.Controllers
             }
         }
 
-        
+
         [Route("EventsByUserId/{userId}")]
+        [Authorize(Roles = "ADMINISTRADOR,USUARIO")]
         [HttpGet]
         public async Task<IActionResult> GetEventsByUserId(int userId)
         {
@@ -157,6 +143,7 @@ namespace Ticket2U.API.Controllers
         }
 
         [Route("Pending")]
+        [Authorize(Roles = "ADMINISTRADOR")]
         [HttpGet]
         public async Task<IActionResult> GetNotApprovedEvents()
         {
@@ -173,6 +160,7 @@ namespace Ticket2U.API.Controllers
         }
 
         [Route("Denied")]
+        [Authorize(Roles = "ADMINISTRADOR")]
         [HttpGet]
         public async Task<IActionResult> GetDenidEvents()
         {
@@ -190,7 +178,7 @@ namespace Ticket2U.API.Controllers
 
         [Route("getByCategory/{category}")]
         [HttpGet]
-        public async Task<IActionResult> GetEventByCategory( string category)
+        public async Task<IActionResult> GetEventByCategory(string category)
         {
             try
             {
@@ -204,10 +192,8 @@ namespace Ticket2U.API.Controllers
             }
         }
 
-
-
         [Route("AdminCreate")]
-        [AllowAnonymous]
+        [Authorize(Roles = "ADMINISTRADOR")]
         [HttpPost]
         public async Task<IActionResult> AdminCreateEvent(Event eventObj)
         {

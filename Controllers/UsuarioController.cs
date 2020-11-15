@@ -61,22 +61,6 @@ namespace Ticket2U.API.Controllers
             }
         }
 
-        [Route("")]
-        [HttpGet]
-        [Authorize(Roles = "ADMINISTRADOR")]
-        public async Task<IActionResult> GetAllUsers()
-        {
-            try
-            {
-                var users = await _repository.GetAllUsers();
-                return Ok(users);
-            }
-            catch (System.Exception)
-            {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, "Erro na listagem de usuários");
-            }
-        }
-
         [Route("Endereco")]
         [Authorize(Roles = "Administrador")]
         [HttpGet]
@@ -140,58 +124,7 @@ namespace Ticket2U.API.Controllers
             }
         }
 
-        [Route("Ban/{UserId}")]
-        [Authorize(Roles = "Administrador")]
-        [HttpPut]
-        public async Task<IActionResult> Banir(int UserId,[FromBody] User userObj)
-        {
-            try
-            {
-                var user = await _repository.GetUserById(UserId);
-
-                if (user == null)
-                {
-                    return NotFound();
-                }
-                else
-                {                    
-                    await _repository.UpdateUser(userObj);                    
-
-                    return Created($"/Usuario/{user.UserId}", userObj);
-                }
-            }
-            catch (Exception ex)
-            {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao atualizar usuário: {ex}");
-            }
-        }
-
-        [Route("UndoBan/{UserId}")]
-        [Authorize(Roles = "Administrador")]
-        [HttpPut]
-        public async Task<IActionResult> Reativar(int UserId,[FromBody] User userObj)
-        {
-            try
-            {
-                var user = await _repository.GetUserById(UserId);
-
-                if (user == null)
-                {
-                    return NotFound();
-                }
-                else
-                {                    
-                    await _repository.UpdateUser(userObj);                    
-
-                    return Created($"/Usuario/{user.UserId}", userObj);
-                }
-            }
-            catch (Exception ex)
-            {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao atualizar usuário: {ex}");
-            }
-        }
-
+        
         [Route("Address/Delete/{UserId}")]
         [HttpDelete]
         public async Task<IActionResult> DeleteAddressUser(int UserId,[FromBody] Address addr)
@@ -238,5 +171,76 @@ namespace Ticket2U.API.Controllers
             }
         }
 
+        #region ADMINISTRADOR
+
+        [Route("")]
+        [HttpGet]
+        [Authorize(Roles = "ADMINISTRADOR")]
+        public async Task<IActionResult> GetAllUsers()
+        {
+            try
+            {
+                var users = await _repository.GetAllUsers();
+                return Ok(users);
+            }
+            catch (System.Exception)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError, "Erro na listagem de usuários");
+            }
+        }
+
+        [Route("Ban/{UserId}")]
+        [Authorize(Roles = "Administrador")]
+        [HttpPut]
+        public async Task<IActionResult> Banir(int UserId,[FromBody] User userObj)
+        {
+            try
+            {
+                var user = await _repository.GetUserById(UserId);
+
+                if (user == null)
+                {
+                    return NotFound();
+                }
+                else
+                {                    
+                    await _repository.BanUser(userObj);                    
+
+                    return Created($"/Usuario/{user.UserId}", userObj);
+                }
+            }
+            catch (Exception ex)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao atualizar usuário: {ex}");
+            }
+        }
+        
+        [Route("Reactivate/{UserId}")]
+        [Authorize(Roles = "ADMINISTRADOR")]
+        [HttpPut]
+        public async Task<IActionResult> Reativar(int UserId,[FromBody] User userObj)
+        {
+            try
+            {
+                var user = await _repository.GetUserById(UserId);
+
+                if (user == null)
+                {
+                    return NotFound();
+                }
+                else
+                {                    
+                    await _repository.ReactivateUser(userObj);                    
+
+                    return Created($"/Usuario/{user.UserId}", userObj);
+                }
+            }
+            catch (Exception ex)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao atualizar usuário: {ex}");
+            }
+        }
+
+        #endregion
     }
 }
