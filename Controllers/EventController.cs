@@ -202,7 +202,7 @@ namespace Ticket2U.API.Controllers
         [Route("AdminCreate")]
         [Authorize(Roles = "ADMINISTRADOR")]
         [HttpPost]
-        public async Task<IActionResult> AdminCreateEvent(Event eventObj)
+        public async Task<IActionResult> AdminCreateEvent([FromBody]Event eventObj)
         {
             try
             {
@@ -223,7 +223,7 @@ namespace Ticket2U.API.Controllers
 
         [Route("{EventId}")]
         [HttpPut]
-        public async Task<IActionResult> UpdateEvent(int EventId, Event eventObj)
+        public async Task<IActionResult> UpdateEvent(int EventId, [FromBody] Event eventObj)
         {
             try
             {
