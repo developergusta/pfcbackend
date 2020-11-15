@@ -15,10 +15,12 @@ namespace Ticket2U.API.Controllers
     public class LoginController : Controller
     {
         private readonly UserRepository _repository;
+        private readonly EmailService _email;
 
-        public LoginController(UserRepository repository)
+        public LoginController(UserRepository repository, EmailService email)
         {
             _repository = repository;
+            _email = email;
         }
 
         [HttpPost]
@@ -61,7 +63,7 @@ namespace Ticket2U.API.Controllers
                 {
                     string newPass = RandomString(5);
                     await _repository.AlternPass(user.Login.Email, Services.Encryptor.MD5Hash(user.Login.Pass), Services.Encryptor.MD5Hash(newPass));
-                    EmailService.recoverPass(user);
+                    await _email.recoverPass(user);
                     return this.StatusCode(StatusCodes.Status200OK, "Email enviado para recuperação de senha");
                 }
             }
@@ -84,7 +86,7 @@ namespace Ticket2U.API.Controllers
                 else
                 {
                     user.Login = await _repository.AlternPass(user.Login.Email, Services.Encryptor.MD5Hash(Users[0].Login.Pass), Services.Encryptor.MD5Hash(Users[1].Login.Pass));
-                    EmailService.recoverPass(user);
+                    await _email.recoverPass(user);
                     return this.StatusCode(StatusCodes.Status200OK, "Email enviado para recuperação de senha");
                 }
             }

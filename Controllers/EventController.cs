@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Ticket2U.API.Repositories;
 using Ticket2U.API.Models;
+using Ticket2U.API.Services;
 
 namespace Ticket2U.API.Controllers
 {
@@ -15,9 +16,13 @@ namespace Ticket2U.API.Controllers
     public class EventController : Controller
     {
         private readonly EventRepository _repository;
-        public EventController(EventRepository repository)
+        private readonly UserRepository _userRepository;
+        private readonly EmailService _email;
+        public EventController(EventRepository repository, UserRepository userRepository, EmailService email)
         {
             _repository = repository;
+            _userRepository = userRepository;
+            _email = email;
         }
 
 
@@ -246,7 +251,10 @@ namespace Ticket2U.API.Controllers
                 if (evento == null) return NotFound();
                 else
                 {
+                    var idUser = evento.UserId.GetValueOrDefault();
                     await _repository.ApproveEvent(evento);
+                    var user = await _userRepository.GetUserById(idUser);
+                    await _email.eventApproved(user, evento);
                     return Created($"/Event/{eventObj.EventId}", evento);
                 }
             }
@@ -267,7 +275,10 @@ namespace Ticket2U.API.Controllers
                 if (evento == null) return NotFound();
                 else
                 {
+                    var idUser = evento.UserId.GetValueOrDefault();
                     await _repository.DenyEvent(evento);
+                    var user = await _userRepository.GetUserById(idUser);
+                    await _email.eventDenied(user, evento);
                     return Created($"/Event/{eventObj.EventId}", evento);
                 }
             }

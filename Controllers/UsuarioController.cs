@@ -176,11 +176,11 @@ namespace Ticket2U.API.Controllers
         [Route("")]
         [HttpGet]
         [Authorize(Roles = "ADMINISTRADOR")]
-        public async Task<IActionResult> GetAllUsers()
+        public async Task<IActionResult> GetUsersList()
         {
             try
             {
-                var users = await _repository.GetAllUsers();
+                var users = await _repository.GetUsersList();
                 return Ok(users);
             }
             catch (System.Exception)
@@ -214,7 +214,7 @@ namespace Ticket2U.API.Controllers
                 return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao atualizar usuário: {ex}");
             }
         }
-        
+
         [Route("Reactivate/{UserId}")]
         [Authorize(Roles = "ADMINISTRADOR")]
         [HttpPut]
