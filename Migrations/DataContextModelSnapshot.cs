@@ -57,27 +57,6 @@ namespace Ticket2U.API.Migrations
                     b.ToTable("Addresses");
                 });
 
-            modelBuilder.Entity("Ticket2U.API.Models.Cashback", b =>
-                {
-                    b.Property<int>("CashbackId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<DateTime?>("DateCashback")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<DateTime>("DateSolicitation")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("text");
-
-                    b.HasKey("CashbackId");
-
-                    b.ToTable("Cashback");
-                });
-
             modelBuilder.Entity("Ticket2U.API.Models.Event", b =>
                 {
                     b.Property<int>("EventId")
@@ -103,6 +82,9 @@ namespace Ticket2U.API.Migrations
 
                     b.Property<string>("Description")
                         .HasColumnType("text");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("numeric");
 
                     b.Property<string>("Status")
                         .HasColumnType("text");
@@ -187,6 +169,9 @@ namespace Ticket2U.API.Migrations
                     b.Property<int?>("EventId")
                         .HasColumnType("integer");
 
+                    b.Property<decimal>("Price")
+                        .HasColumnType("numeric");
+
                     b.HasKey("LotId");
 
                     b.HasIndex("EventId");
@@ -247,9 +232,6 @@ namespace Ticket2U.API.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<int?>("CashbackId")
-                        .HasColumnType("integer");
-
                     b.Property<int?>("EventId")
                         .HasColumnType("integer");
 
@@ -266,9 +248,6 @@ namespace Ticket2U.API.Migrations
                         .HasColumnType("integer");
 
                     b.HasKey("TicketId");
-
-                    b.HasIndex("CashbackId")
-                        .IsUnique();
 
                     b.HasIndex("EventId");
 
@@ -382,10 +361,6 @@ namespace Ticket2U.API.Migrations
 
             modelBuilder.Entity("Ticket2U.API.Models.Ticket", b =>
                 {
-                    b.HasOne("Ticket2U.API.Models.Cashback", "Cashback")
-                        .WithOne("Ticket")
-                        .HasForeignKey("Ticket2U.API.Models.Ticket", "CashbackId");
-
                     b.HasOne("Ticket2U.API.Models.Event", "Event")
                         .WithMany("Tickets")
                         .HasForeignKey("EventId");

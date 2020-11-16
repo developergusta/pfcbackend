@@ -14,7 +14,6 @@ namespace Ticket2U.API.Data
         public DbSet<LotCategory> LotCategories { get; set; }
         public DbSet<Phone> Phones { get; set; }
         public DbSet<User> Users { get; set; }
-        public DbSet<Cashback> Cashbacks { get; set; }
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder){
