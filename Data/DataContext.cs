@@ -44,6 +44,12 @@ namespace Ticket2U.API.Data
             {
                 entity.HasMany( l => l.LotCategories).WithOne( a => a.Lot).OnDelete(DeleteBehavior.Cascade);
             });
+            modelBuilder.Entity<Ticket>(entity => {
+                entity.HasOne( t => t.Event ).WithMany( t => t.Tickets );
+                entity.HasOne( t => t.User ).WithMany( t => t.Tickets );
+                entity.HasOne( t => t.Lot ).WithMany( t => t.Tickets );
+                entity.HasOne( t => t.LotCategory ).WithMany( t => t.Tickets );
+            });
         }
     }
 }

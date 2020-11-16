@@ -192,7 +192,7 @@ namespace Ticket2U.API.Controllers
         [Route("Ban/{UserId}")]
         [Authorize(Roles = "Administrador")]
         [HttpPut]
-        public async Task<IActionResult> Banir(int UserId,[FromBody] User userObj)
+        public async Task<IActionResult> BanUser(int UserId,[FromBody] User userObj)
         {
             try
             {
@@ -218,7 +218,7 @@ namespace Ticket2U.API.Controllers
         [Route("Reactivate/{UserId}")]
         [Authorize(Roles = "ADMINISTRADOR")]
         [HttpPut]
-        public async Task<IActionResult> Reativar(int UserId,[FromBody] User userObj)
+        public async Task<IActionResult> ReactivateUser(int UserId,[FromBody] User userObj)
         {
             try
             {

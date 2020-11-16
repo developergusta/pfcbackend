@@ -1,6 +1,5 @@
 C:\Users\guga_\Downloads\PFC_NEW\backend\Ticket2U.API\bin\Debug\netcoreapp3.1\appsettings.Development.json
 C:\Users\guga_\Downloads\PFC_NEW\backend\Ticket2U.API\bin\Debug\netcoreapp3.1\appsettings.json
-C:\Users\guga_\Downloads\PFC_NEW\backend\Ticket2U.API\bin\Debug\netcoreapp3.1\Properties\launchSettings.json
 C:\Users\guga_\Downloads\PFC_NEW\backend\Ticket2U.API\bin\Debug\netcoreapp3.1\Ticket2U.API.exe
 C:\Users\guga_\Downloads\PFC_NEW\backend\Ticket2U.API\bin\Debug\netcoreapp3.1\Ticket2U.API.deps.json
 C:\Users\guga_\Downloads\PFC_NEW\backend\Ticket2U.API\bin\Debug\netcoreapp3.1\Ticket2U.API.runtimeconfig.json
@@ -70,3 +69,4 @@ C:\Users\guga_\Downloads\PFC_NEW\backend\Ticket2U.API\bin\Debug\netcoreapp3.1\Au
 C:\Users\guga_\Downloads\PFC_NEW\backend\Ticket2U.API\bin\Debug\netcoreapp3.1\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
 C:\Users\guga_\Downloads\PFC_NEW\backend\Ticket2U.API\bin\Debug\netcoreapp3.1\Npgsql.dll
 C:\Users\guga_\Downloads\PFC_NEW\backend\Ticket2U.API\bin\Debug\netcoreapp3.1\Npgsql.EntityFrameworkCore.PostgreSQL.dll
+C:\Users\guga_\Downloads\PFC_NEW\backend\Ticket2U.API\obj\Debug\netcoreapp3.1\scopedcss\bundle\Ticket2U.API.styles.css

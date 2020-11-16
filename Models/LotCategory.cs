@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -12,5 +13,6 @@ namespace Ticket2U.API.Models
         public int? LotId { get; set; }
         [ForeignKey("LotId")]
         public Lot Lot { get; set; }
+        public List<Ticket> Tickets { get; set; }
     }
 }
