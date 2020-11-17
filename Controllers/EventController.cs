@@ -311,6 +311,52 @@ namespace Ticket2U.API.Controllers
             }
         }
 
+        [Route("Address/Delete/{LotId}")]
+        [HttpDelete]
+        public async Task<IActionResult> DeleteLotEvent(int LotId)
+        {
+            try
+            {
+                var lot = await _repository.GetLotById(LotId);
+                if (lot == null)
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    await _repository.DeleteLot(lot);
+                    return Ok(lot);
+                }
+            }
+            catch (Exception ex)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao deletar lote: {ex.Message}");
+            }
+        }
+
+        [Route("LotCategory/Delete/{LotCategoryId}")]
+        [HttpDelete]
+        public async Task<IActionResult> DeleteLotCategoryEvent(int LotCategoryId)
+        {
+            try
+            {
+                var lotCateg = await _repository.GetLotCategoryById(LotCategoryId);
+                if (lotCateg == null)
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    await _repository.DeleteLotCategory(lotCateg);
+                    return Ok(lotCateg);
+                }
+            }
+            catch (Exception ex)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao deletar categoria de lote: {ex.Message}");
+            }
+        }
+
         [Route("Endereco")]
         [HttpGet]
         public async Task<IActionResult> GetAllAddresses()

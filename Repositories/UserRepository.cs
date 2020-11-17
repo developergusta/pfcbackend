@@ -140,11 +140,6 @@ namespace Ticket2U.API.Repositories
             _context.Phones.Remove(phone);
         }
 
-        internal Task BanUser(User userObj)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<User> Login(string email, string password)
         {
             IQueryable<User> query = _context.Users.Where(x => x.Login.Email.ToLower() == email.ToLower() && x.Login.Pass == password && x.Status != "BANIDO").Include(x => x.Login).Include(x => x.Addresses).Include(x => x.Phones).Include(x => x.Tickets).Include(x => x.Image).Include(x => x.Events);
@@ -167,11 +162,6 @@ namespace Ticket2U.API.Repositories
                 Console.WriteLine($"{e.Message}");
                 throw;
             }
-        }
-
-        internal Task ReactivateUser(User userObj)
-        {
-            throw new NotImplementedException();
         }
 
         public async Task<Login> GetPass(string email, string pass)
@@ -204,6 +194,24 @@ namespace Ticket2U.API.Repositories
                     .FirstOrDefaultAsync();
 
             userLocal.Credit = (userLocal.Credit - valTotal);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task BanUser(User userObj)
+        {
+            var userLocal = await _context.Users
+                    .Where(x => x.UserId == userObj.UserId)
+                    .FirstOrDefaultAsync();
+            userLocal.Status = "BANIDO";
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task ReactivateUser(User userObj)
+        {
+            var userLocal = await _context.Users
+                    .Where(x => x.UserId == userObj.UserId)
+                    .FirstOrDefaultAsync();
+            userLocal.Status = "ATIVO";
             await _context.SaveChangesAsync();
         }
     }

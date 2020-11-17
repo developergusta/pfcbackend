@@ -78,6 +78,7 @@ namespace Ticket2U.API.Controllers
         }
 
         [Route("Delete/{id}")]
+        [Authorize(Roles = "Administrador")]
         [HttpDelete]
         public async Task<IActionResult> DeleteUser(int id)
         {

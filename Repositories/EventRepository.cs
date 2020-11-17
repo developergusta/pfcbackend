@@ -55,6 +55,17 @@ namespace Ticket2U.API.Repositories
             return await _context.Events.Include(x => x.Address).Include(x => x.Images).Include(x => x.Lots).ThenInclude(x => x.LotCategories).FirstOrDefaultAsync(x => x.EventId == id);
         }
 
+        public async Task DeleteLot(Lot lot)
+        {
+            _context.Lots.Remove(lot);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteLotCategory(LotCategory lotCateg)
+        {
+            _context.LotCategories.Remove(lotCateg);
+            await _context.SaveChangesAsync();
+        }
 
         public async Task<IEnumerable<Event>> GetEventByCategory(string category)
         {
@@ -67,6 +78,12 @@ namespace Ticket2U.API.Repositories
                 .Where(c => c.Category.ToLower().Contains(category.ToLower()));
 
             return await query.ToArrayAsync();
+        }
+
+        public async Task<Lot> GetLotById(int lotId)
+        {
+            Lot lot = await _context.Lots.Where(x => x.LotId == lotId).FirstOrDefaultAsync();
+            return lot;
         }
 
         public async Task<LotCategory> GetLotCategoryById(int lotCatgId)
