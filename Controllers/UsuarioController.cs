@@ -19,7 +19,7 @@ namespace Ticket2U.API.Controllers
             _repository = repository;
         }
 
-        
+
 
         [Route("{id}")]
         [HttpGet]
@@ -38,7 +38,7 @@ namespace Ticket2U.API.Controllers
 
         [Route("")]
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody]User user)
+        public async Task<IActionResult> Create([FromBody] User user)
         {
             try
             {
@@ -100,11 +100,11 @@ namespace Ticket2U.API.Controllers
                 return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao atualizar evento: {ex}");
             }
         }
-        
+
 
         [Route("{UserId}")]
         [HttpPut]
-        public async Task<IActionResult> UpdateUser(int UserId,[FromBody] User userObj)
+        public async Task<IActionResult> UpdateUser(int UserId, [FromBody] User userObj)
         {
             try
             {
@@ -115,8 +115,8 @@ namespace Ticket2U.API.Controllers
                     return NotFound();
                 }
                 else
-                {                    
-                    await _repository.UpdateUser(userObj);                    
+                {
+                    await _repository.UpdateUser(userObj);
 
                     return Created($"/Usuario/{user.UserId}", userObj);
                 }
@@ -127,10 +127,10 @@ namespace Ticket2U.API.Controllers
             }
         }
 
-        
+
         [Route("Address/Delete/{UserId}")]
         [HttpDelete]
-        public async Task<IActionResult> DeleteAddressUser(int UserId,[FromBody] Address addr)
+        public async Task<IActionResult> DeleteAddressUser(int UserId, [FromBody] Address addr)
         {
             try
             {
@@ -153,7 +153,7 @@ namespace Ticket2U.API.Controllers
 
         [Route("Phone/Delete/{UserId}")]
         [HttpDelete]
-        public async Task<IActionResult> DeletePhoneUser(int UserId,[FromBody] Phone phone)
+        public async Task<IActionResult> DeletePhoneUser(int UserId, [FromBody] Phone phone)
         {
             try
             {
@@ -193,6 +193,7 @@ namespace Ticket2U.API.Controllers
         }
 
         [Route("Ban/{UserId}")]
+        [Authorize(Roles = "ADMINISTRADOR")]
         [HttpGet]
         public async Task<IActionResult> BanUser(int UserId)
         {
@@ -205,8 +206,8 @@ namespace Ticket2U.API.Controllers
                     return NotFound();
                 }
                 else
-                {                    
-                    await _repository.BanUser(user);                    
+                {
+                    await _repository.BanUser(user);
 
                     return Created($"/Usuario/{user.UserId}", user);
                 }
@@ -231,8 +232,8 @@ namespace Ticket2U.API.Controllers
                     return NotFound();
                 }
                 else
-                {                    
-                    await _repository.ReactivateUser(user);                    
+                {
+                    await _repository.ReactivateUser(user);
 
                     return Created($"/Usuario/{user.UserId}", user);
                 }
