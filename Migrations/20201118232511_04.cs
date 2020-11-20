@@ -22,7 +22,7 @@ namespace Ticket2U.API.Migrations
                 nullable: true);
 
             migrationBuilder.CreateTable(
-                name: "Cashback",
+                name: "Cashbacks",
                 columns: table => new
                 {
                     CashbackId = table.Column<int>(nullable: false)
@@ -33,7 +33,7 @@ namespace Ticket2U.API.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Cashback", x => x.CashbackId);
+                    table.PrimaryKey("PK_Cashbacks", x => x.CashbackId);
                 });
 
             migrationBuilder.CreateIndex(
@@ -43,10 +43,10 @@ namespace Ticket2U.API.Migrations
                 unique: true);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Tickets_Cashback_CashbackId",
+                name: "FK_Tickets_Cashbacks_CashbackId",
                 table: "Tickets",
                 column: "CashbackId",
-                principalTable: "Cashback",
+                principalTable: "Cashbacks",
                 principalColumn: "CashbackId",
                 onDelete: ReferentialAction.Restrict);
         }
@@ -54,11 +54,11 @@ namespace Ticket2U.API.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_Tickets_Cashback_CashbackId",
+                name: "FK_Tickets_Cashbacks_CashbackId",
                 table: "Tickets");
 
             migrationBuilder.DropTable(
-                name: "Cashback");
+                name: "Cashbacks");
 
             migrationBuilder.DropIndex(
                 name: "IX_Tickets_CashbackId",

@@ -1,10 +1,12 @@
 using System;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Ticket2U.API.Repositories;
 using Ticket2U.API.Models;
+using System.IO;
 
 namespace Ticket2U.API.Controllers
 {
@@ -191,9 +193,8 @@ namespace Ticket2U.API.Controllers
         }
 
         [Route("Ban/{UserId}")]
-        [Authorize(Roles = "Administrador")]
-        [HttpPut]
-        public async Task<IActionResult> BanUser(int UserId,[FromBody] User userObj)
+        [HttpGet]
+        public async Task<IActionResult> BanUser(int UserId)
         {
             try
             {
@@ -205,9 +206,9 @@ namespace Ticket2U.API.Controllers
                 }
                 else
                 {                    
-                    await _repository.BanUser(userObj);                    
+                    await _repository.BanUser(user);                    
 
-                    return Created($"/Usuario/{user.UserId}", userObj);
+                    return Created($"/Usuario/{user.UserId}", user);
                 }
             }
             catch (Exception ex)
@@ -219,7 +220,7 @@ namespace Ticket2U.API.Controllers
         [Route("Reactivate/{UserId}")]
         [Authorize(Roles = "ADMINISTRADOR")]
         [HttpPut]
-        public async Task<IActionResult> ReactivateUser(int UserId,[FromBody] User userObj)
+        public async Task<IActionResult> ReactivateUser(int UserId)
         {
             try
             {
@@ -231,9 +232,9 @@ namespace Ticket2U.API.Controllers
                 }
                 else
                 {                    
-                    await _repository.ReactivateUser(userObj);                    
+                    await _repository.ReactivateUser(user);                    
 
-                    return Created($"/Usuario/{user.UserId}", userObj);
+                    return Created($"/Usuario/{user.UserId}", user);
                 }
             }
             catch (Exception ex)
@@ -243,5 +244,6 @@ namespace Ticket2U.API.Controllers
         }
 
         #endregion
+
     }
 }

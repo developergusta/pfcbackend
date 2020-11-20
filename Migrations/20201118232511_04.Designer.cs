@@ -10,7 +10,7 @@ using Ticket2U.API.Data;
 namespace Ticket2U.API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20201116231311_04")]
+    [Migration("20201118232511_04")]
     partial class _04
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -77,7 +77,7 @@ namespace Ticket2U.API.Migrations
 
                     b.HasKey("CashbackId");
 
-                    b.ToTable("Cashback");
+                    b.ToTable("Cashbacks");
                 });
 
             modelBuilder.Entity("Ticket2U.API.Models.Event", b =>
