@@ -220,7 +220,7 @@ namespace Ticket2U.API.Controllers
 
         [Route("Reactivate/{UserId}")]
         [Authorize(Roles = "ADMINISTRADOR")]
-        [HttpPut]
+        [HttpGet]
         public async Task<IActionResult> ReactivateUser(int UserId)
         {
             try
