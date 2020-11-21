@@ -115,6 +115,21 @@ namespace Ticket2U.API.Controllers
             }
         }
 
+        [Route("LotCategoryByTicket/{id}")]
+        [HttpGet]
+        public async Task<IActionResult> GetLotCategoryByTicket(int id)
+        {
+            try
+            {
+                var lotCateg = await _repository.GetLotCategoryById(id);
+                return Ok(lotCateg);
+            }
+            catch (Exception ex)
+            {
+                Console.Write($"Erro: {ex}");
+                return this.StatusCode(StatusCodes.Status500InternalServerError, "Erro na busca de categoria de lote");
+            }
+        }
 
         [Route("EventsByUserId/{userId}")]
         [Authorize(Roles = "ADMINISTRADOR,USUARIO")]
@@ -357,22 +372,6 @@ namespace Ticket2U.API.Controllers
             }
         }
 
-        [Route("Endereco")]
-        [HttpGet]
-        public async Task<IActionResult> GetAllAddresses()
-        {
-            try
-            {
-                var results = await _repository.GetAllAddresses();
-                return Ok(results);
-            }
-            catch (System.Exception)
-            {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, "Banco de dados falhou");
-            }
-        }
-
-
         [Route("Endereco/{id}")]
         [HttpGet]
         public async Task<IActionResult> Get(int id)
@@ -387,14 +386,5 @@ namespace Ticket2U.API.Controllers
                 return this.StatusCode(StatusCodes.Status500InternalServerError, "Banco de dados falhou");
             };
         }
-
-        [Route("Endereco")]
-        [HttpPost]
-        public string Create(Address address)
-        {
-            _repository.CreateAddress(address);
-            return "Endereço salvo com sucesso";
-        }
-
     }
 }

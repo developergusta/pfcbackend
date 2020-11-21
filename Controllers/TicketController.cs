@@ -81,6 +81,21 @@ namespace Ticket2U.API.Controllers
         }
 
         [Route("Cashback")]
+        [HttpGet]
+        public async Task<IActionResult> GetCashbacks()
+        {
+            try
+            {
+                var result = await _TicketRepository.GetUsersTicketCashback();
+                return Ok(result);
+            }
+            catch (System.Exception)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError, "Erro na compra listagem de cashbacks");
+            }
+        }
+
+        [Route("Cashback")]
         [HttpPost]
         public async Task<IActionResult> RequestCashback([FromBody]Cashback cashbackObj)
         {
@@ -106,6 +121,7 @@ namespace Ticket2U.API.Controllers
         {
             try
             {
+                await _TicketRepository.DenyCashback(cashback);
                 return this.StatusCode(StatusCodes.Status200OK, "Reembolso Negado");
             }
             catch (Exception ex)
@@ -121,6 +137,7 @@ namespace Ticket2U.API.Controllers
         {
             try
             {
+                await _TicketRepository.ApproveCashback(cashback);
                 return this.StatusCode(StatusCodes.Status200OK, "Reembolso Aprovado");
             }
             catch (Exception ex)

@@ -46,7 +46,16 @@ namespace Ticket2U.API.Repositories
             var cashbackLocal = await _context.Cashbacks.Where( c => c.CashbackId == cashback.CashbackId).FirstOrDefaultAsync();
             cashbackLocal.Status = "NEGADO";
             await _context.SaveChangesAsync();
-        } 
+        }
 
+        public async Task<IEnumerable<Cashback>> GetUsersTicketCashback()
+        {
+            var cashbacks = await _context.Cashbacks.Include(x => x.Ticket).ThenInclude( x => x.User).ToListAsync();
+            // var cashbacks = await _context.Users
+            // .Include( u => u.Tickets ).ThenInclude( t => t.Cashback )
+            // .Include( u => u.Tickets ).ThenInclude( x => x.Event)
+            // .Where( t => t.Tickets != null && t.Tickets.ForEach( x => x.Cashback) ).ToListAsync();
+            return cashbacks;
+        }
     }
 }
