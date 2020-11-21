@@ -50,11 +50,7 @@ namespace Ticket2U.API.Repositories
 
         public async Task<IEnumerable<Cashback>> GetUsersTicketCashback()
         {
-            var cashbacks = await _context.Cashbacks.Include(x => x.Ticket).ThenInclude( x => x.User).ToListAsync();
-            // var cashbacks = await _context.Users
-            // .Include( u => u.Tickets ).ThenInclude( t => t.Cashback )
-            // .Include( u => u.Tickets ).ThenInclude( x => x.Event)
-            // .Where( t => t.Tickets != null && t.Tickets.ForEach( x => x.Cashback) ).ToListAsync();
+            var cashbacks = await _context.Cashbacks.Include(x => x.Ticket).ThenInclude( x => x.User).ToListAsync();            
             return cashbacks;
         }
     }

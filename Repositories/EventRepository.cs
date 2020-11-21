@@ -67,6 +67,19 @@ namespace Ticket2U.API.Repositories
             await _context.SaveChangesAsync();
         }
 
+        public async Task<IEnumerable<Event>> GetMostSoldEventsOnYear ()
+        {
+            DateTime now = DateTime.UtcNow;
+            var eventos = await _context.Events
+                .Where( x => x.DateStart >= new DateTime(now.Year, 1, 1))
+                .Include( x => x.Tickets )
+                .OrderByDescending ( x => x.Tickets)
+                .Take( 5 )
+                .ToListAsync();
+
+            return eventos;
+        }
+
         public async Task<IEnumerable<Event>> GetEventByCategory(string category)
         {
             IQueryable<Event> query = _context.Events

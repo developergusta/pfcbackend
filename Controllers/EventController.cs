@@ -148,6 +148,23 @@ namespace Ticket2U.API.Controllers
             }
         }
 
+        [Route("EventsMostSold")]
+        [Authorize(Roles = "ADMINISTRADOR")]
+        [HttpGet]
+        public async Task<IActionResult> GetMostSoldEventsOnYear()
+        {
+            try
+            {
+                var events = await _repository.GetMostSoldEventsOnYear();
+
+                return Ok(events);
+            }
+            catch (Exception ex)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao retornar eventos: {ex}");
+            }
+        }
+
         [Route("Approved")]
         [HttpGet]
         public async Task<IActionResult> GetApprovedEvents()
