@@ -264,7 +264,7 @@ namespace Ticket2U.API.Controllers
                 if (evento == null) return NotFound();
                 else
                 {
-                    await _repository.UpdateEvent(evento);
+                    await _repository.UpdateEvent(eventObj);
                     return Created($"/Event/{eventObj.EventId}", evento);
                 }
             }
