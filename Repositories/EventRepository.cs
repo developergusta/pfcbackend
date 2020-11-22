@@ -147,7 +147,7 @@ namespace Ticket2U.API.Repositories
                 eventLocal.Address.Street = eventObj.Address.Street;
                 eventLocal.Address.ZipCode = eventObj.Address.ZipCode;
 
-                foreach (var item in eventLocal.Lots)
+                foreach (var item in eventObj.Lots)
                 {
                     if (item.LotId == 0)
                     {
