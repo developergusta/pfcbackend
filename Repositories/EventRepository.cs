@@ -128,6 +128,8 @@ namespace Ticket2U.API.Repositories
 
                 eventLocal.TitleEvent = eventObj.TitleEvent;
                 eventLocal.Description = eventObj.Description;
+                eventLocal.Category = eventObj.Category;
+                eventLocal.Capacity = eventObj.Capacity;
                 eventLocal.DateStart = eventObj.DateStart;
                 eventLocal.DateEnd = eventObj.DateEnd;
 

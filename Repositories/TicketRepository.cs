@@ -24,10 +24,21 @@ namespace Ticket2U.API.Repositories
             await _context.SaveChangesAsync();
         } 
 
-        public async Task RequestCashback(Cashback cashback)
+        public async Task RequestCashback(Ticket ticket)
         {
-            await _context.Cashbacks.AddAsync(cashback);
-            await _context.SaveChangesAsync();
+            try
+            {
+                var ticketLocal = await _context.Tickets
+                    .Where( x => x.TicketId == ticket.TicketId )
+                    .Include( x => x.Cashback)
+                    .FirstOrDefaultAsync();
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Erro: {ex}");
+            }
+            
         } 
 
         public async Task ApproveCashback(Cashback cashback)

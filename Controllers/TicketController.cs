@@ -124,14 +124,12 @@ namespace Ticket2U.API.Controllers
 
         [Route("Cashback")]
         [HttpPost]
-        public async Task<IActionResult> RequestCashback([FromBody] Cashback cashbackObj)
+        public async Task<IActionResult> RequestCashback([FromBody] Ticket ticketObj)
         {
             try
             {
-                Cashback cashback = new Cashback();
-                cashback.DateSolicitation = DateTime.UtcNow;
-                cashback.Description = cashbackObj.Description;
-                await _TicketRepository.RequestCashback(cashback);
+                ticketObj.Cashback.DateSolicitation = DateTime.UtcNow;
+                await _TicketRepository.RequestCashback(ticketObj);
                 return this.StatusCode(StatusCodes.Status200OK, "Reembolso solicitado");
             }
             catch (Exception ex)
