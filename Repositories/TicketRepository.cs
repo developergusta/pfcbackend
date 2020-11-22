@@ -53,5 +53,11 @@ namespace Ticket2U.API.Repositories
             var cashbacks = await _context.Cashbacks.Include(x => x.Ticket).ThenInclude( x => x.User).ToListAsync();            
             return cashbacks;
         }
+
+        public async Task<int> GetTicketsSoldByEvent(int eventId)
+        {
+            int query = await _context.Tickets.Where(x => x.EventId == eventId).CountAsync();
+            return query;
+        }
     }
 }

@@ -79,6 +79,21 @@ namespace Ticket2U.API.Controllers
                 return this.StatusCode(StatusCodes.Status500InternalServerError, "Erro na compra de ingressos");
             }
         }
+        
+        [Route("User/{id}")]
+        [HttpGet]
+        public async Task<IActionResult> GetTicketsSoldByEvent(int id)
+        {
+            try
+            {                
+                var result = await _TicketRepository.GetTicketsSoldByEvent(id);
+                return Ok(result);
+            }
+            catch (System.Exception)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError, "Erro na compra de ingressos");
+            }
+        }
 
         [Route("Cashback")]
         [HttpGet]

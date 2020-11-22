@@ -204,7 +204,6 @@ namespace Ticket2U.API.Repositories
 
         public void CreateAddress(Address address)
         {
-
             _context.Addresses.Add(address);
             _context.SaveChanges();
         }
@@ -219,12 +218,6 @@ namespace Ticket2U.API.Repositories
             IQueryable<Ticket> query = _context.Tickets.Where(x => x.EventId == eventObj.EventId).Include(x => x.User);
             return await query.ToListAsync();
         }
-
-        public void DeleteRange<T>(T[] entityArray) where T : class
-        {
-            _context.RemoveRange(entityArray);
-        }
-
 
         public async Task<IEnumerable<Event>> GetEventsToday()
         {
