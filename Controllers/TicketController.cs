@@ -31,6 +31,7 @@ namespace Ticket2U.API.Controllers
             try
             {
                 int idUsuario = tickets[0].UserId.GetValueOrDefault();
+                int idEvento = tickets[0].EventId.GetValueOrDefault();
                 var user = await _UserRepository.GetUserById(idUsuario);
                 if (user.Credit > 0)
                 {
@@ -42,14 +43,25 @@ namespace Ticket2U.API.Controllers
                         var lotcatg = await _EventRepository.GetLotCategoryById(idCatg);
                         valTotal = valTotal + lotcatg.PriceCategory;
                     }
-                    if (valTotal > user.Credit){
+                    if (valTotal > user.Credit)
+                    {
                         return this.StatusCode(StatusCodes.Status500InternalServerError, "Saldo insuficiente");
-                    }                    
-                    await _TicketRepository.BuyTicket(tickets);
-                    await _UserRepository.UpdateSaldo(valTotal, user);
-                    return Created($"/Ticket/{tickets[0].UserId}", tickets);
+                    }
+                    var ticketsSoldByEvent = await _TicketRepository.GetTicketsSoldByEvent(idEvento);
+                    var evento = await _EventRepository.GetEvent(idEvento);
+                    if (ticketsSoldByEvent + tickets.Count > evento.Capacity)
+                    {
+                        await _TicketRepository.BuyTicket(tickets);
+                        await _UserRepository.UpdateSaldo(valTotal, user);
+                        return Created($"/Ticket/{tickets[0].UserId}", tickets);
+                    }
+                    else
+                    {
+                        return this.StatusCode(StatusCodes.Status500InternalServerError, "Limite máximo de ingressos foi atingido");
+                    }
                 }
-                else{
+                else
+                {
                     return this.StatusCode(StatusCodes.Status500InternalServerError, "Saldo insuficiente");
                 }
             }
@@ -69,8 +81,8 @@ namespace Ticket2U.API.Controllers
                 var user = await _UserRepository.GetUserById(id);
                 if (user != null)
                 {
-                var result = await _UserRepository.GetTicketsByUser(id);
-                return Ok(result);
+                    var result = await _UserRepository.GetTicketsByUser(id);
+                    return Ok(result);
                 }
                 return this.StatusCode(StatusCodes.Status500InternalServerError, "Não foi possível localizar o usuário");
             }
@@ -79,13 +91,13 @@ namespace Ticket2U.API.Controllers
                 return this.StatusCode(StatusCodes.Status500InternalServerError, "Erro na compra de ingressos");
             }
         }
-        
-        [Route("User/{id}")]
+
+        [Route("TicketsSoldByEvent/{id}")]
         [HttpGet]
         public async Task<IActionResult> GetTicketsSoldByEvent(int id)
         {
             try
-            {                
+            {
                 var result = await _TicketRepository.GetTicketsSoldByEvent(id);
                 return Ok(result);
             }
@@ -112,7 +124,7 @@ namespace Ticket2U.API.Controllers
 
         [Route("Cashback")]
         [HttpPost]
-        public async Task<IActionResult> RequestCashback([FromBody]Cashback cashbackObj)
+        public async Task<IActionResult> RequestCashback([FromBody] Cashback cashbackObj)
         {
             try
             {
@@ -125,14 +137,14 @@ namespace Ticket2U.API.Controllers
             catch (Exception ex)
             {
                 return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao recuperar senha: {ex}");
-            }            
+            }
         }
 
         #region ADMINSTRADOR
         [Route("Cashback/0")]
         [HttpPut]
         [Authorize(Roles = "ADMINISTRADOR")]
-        public async Task<IActionResult> DenyCashback([FromBody]Cashback cashback)
+        public async Task<IActionResult> DenyCashback([FromBody] Cashback cashback)
         {
             try
             {
@@ -142,7 +154,7 @@ namespace Ticket2U.API.Controllers
             catch (Exception ex)
             {
                 return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao alterar status do cashback: {ex}");
-            }            
+            }
         }
 
         [Route("Cashback/1")]
@@ -158,10 +170,10 @@ namespace Ticket2U.API.Controllers
             catch (Exception ex)
             {
                 return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao alterar status do cashback: {ex}");
-            }            
+            }
         }
 
         #endregion
-        
+
     }
 }
