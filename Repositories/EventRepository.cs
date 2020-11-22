@@ -147,24 +147,27 @@ namespace Ticket2U.API.Repositories
                 eventLocal.Address.Street = eventObj.Address.Street;
                 eventLocal.Address.ZipCode = eventObj.Address.ZipCode;
 
+                await _context.SaveChangesAsync();
                 foreach (var item in eventObj.Lots)
                 {
                     if (item.LotId == 0)
                     {
-                        item.EventId = eventObj.EventId;
+                        item.EventId = eventObj.EventId;                        
+                        item.DateStart = item.DateStart;
+                        item.DateEnd = item.DateEnd;
                         await _context.Lots.AddAsync(item);
+                        await _context.SaveChangesAsync();
 
                         foreach (var itemCatg in item.LotCategories)
                         {
                             itemCatg.LotId = item.LotId;
                             await _context.Lots.AddAsync(item);
+                            await _context.SaveChangesAsync();
                         }
                     }
                     else
                     {
                         var lot = eventLocal.Lots.Find(x => x.LotId == item.LotId);
-                        lot.DateStart = item.DateStart;
-                        lot.DateEnd = item.DateEnd;
 
                         foreach (var lotCatg in lot.LotCategories)
                         {
@@ -172,6 +175,7 @@ namespace Ticket2U.API.Repositories
                             {
                                 lotCatg.LotId = lot.LotId;
                                 await _context.LotCategories.AddAsync(lotCatg);
+                                await _context.SaveChangesAsync();
                             }
                             else
                             {
