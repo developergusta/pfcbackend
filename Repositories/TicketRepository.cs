@@ -32,6 +32,7 @@ namespace Ticket2U.API.Repositories
                     .Where( x => x.TicketId == ticket.TicketId )
                     .Include( x => x.Cashback)
                     .FirstOrDefaultAsync();
+                ticketLocal.Cashback = new Cashback();
                 ticketLocal.Cashback.DateSolicitation = DateTime.UtcNow;
                 ticketLocal.Cashback.Description = ticket.Cashback.Description; 
                 await _context.SaveChangesAsync();
