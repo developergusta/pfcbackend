@@ -69,6 +69,8 @@ namespace Ticket2U.API.Repositories
                 .ThenInclude( x => x.User)
                 .Include(x => x.Ticket)
                 .ThenInclude( x => x.Event)
+                .Include(x => x.Ticket)
+                .ThenInclude( x => x.LotCategory)
                 .ToListAsync();            
             return cashbacks;
         }
