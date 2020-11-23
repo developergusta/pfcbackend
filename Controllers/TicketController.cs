@@ -128,7 +128,6 @@ namespace Ticket2U.API.Controllers
         {
             try
             {
-                ticketObj.Cashback.DateSolicitation = DateTime.UtcNow;
                 await _TicketRepository.RequestCashback(ticketObj);
                 return this.StatusCode(StatusCodes.Status200OK, "Reembolso solicitado");
             }

@@ -35,7 +35,13 @@ namespace Ticket2U.API.Repositories
 
         public async Task<IEnumerable<User>> GetUsersList()
         {
-            return await _context.Users.Include(x => x.Login).Include(x => x.Addresses).Include(x => x.Tickets).Include(x => x.Image).Include(x => x.Phones).ToListAsync();
+            return await _context.Users
+                .Include(x => x.Login)
+                .Include(x => x.Addresses)
+                .Include(x => x.Tickets)
+                .Include(x => x.Image)
+                .Include(x => x.Phones)
+                .ToListAsync();
         }
 
         public async Task<User> GetUserById(int id)
