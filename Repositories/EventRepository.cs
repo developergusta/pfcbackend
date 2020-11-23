@@ -148,13 +148,39 @@ namespace Ticket2U.API.Repositories
                 eventLocal.Address.ZipCode = eventObj.Address.ZipCode;
 
                 await _context.SaveChangesAsync();
+
+                foreach (var img in eventObj.Images)
+                {
+                    if(img.EventId == null || img.EventId == 0)
+                    {
+                        img.EventId = eventLocal.EventId;
+                    }
+                    if(img.IdImage == 0)
+                    {
+                        await _context.Images.AddAsync(img);
+                        await _context.SaveChangesAsync();
+                    }
+                    else
+                    {
+                        var imgLocal = eventLocal.Images.Find(x => x.IdImage == img.IdImage);
+                        imgLocal.Src = img.Src;
+                        await _context.SaveChangesAsync();
+                    }
+                }
+                
                 foreach (var item in eventObj.Lots)
                 {
                     if (item.LotId == 0)
                     {
-                        item.EventId = eventObj.EventId;                        
-                        item.DateStart = item.DateStart;
-                        item.DateEnd = item.DateEnd;
+                        item.EventId = eventObj.EventId;      
+                        if(item.DateStart == null)
+                        {
+                            item.DateStart = eventObj.DateStart;
+                        }    
+                        if(item.DateEnd == null)
+                        {
+                            item.DateEnd = eventObj.DateEnd;
+                        }    
                         await _context.Lots.AddAsync(item);
                         await _context.SaveChangesAsync();
 
