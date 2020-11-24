@@ -96,7 +96,7 @@ namespace Ticket2U.API.Controllers
             try
             {
                 var evento = await _repository.GetEvent(id);
-                DateTime now = DateTime.UtcNow;
+                DateTime now = DateTime.UtcNow.AddHours(-3);
                 var i = 0;
                 foreach (var lot in evento.Lots)
                 {
@@ -260,6 +260,9 @@ namespace Ticket2U.API.Controllers
             try
             {
                 var evento = await _repository.GetEvent(EventId);
+                if(evento.DateStart > DateTime.UtcNow.AddHours(-3)){
+                    return this.StatusCode(StatusCodes.Status500InternalServerError, $"Não é possível alterar o evento se já tiver acontecido (ou estiver acontecendo)");
+                }
 
                 if (evento == null) return NotFound();
                 else

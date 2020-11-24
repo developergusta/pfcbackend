@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Ticket2U.API.Models;
 using Ticket2U.API.Repositories;
+using Ticket2U.API.Services;
 
 namespace Ticket2U.API.Controllers
 {
@@ -15,12 +16,14 @@ namespace Ticket2U.API.Controllers
         private readonly UserRepository _UserRepository;
         private readonly EventRepository _EventRepository;
         private readonly TicketRepository _TicketRepository;
+        private readonly EmailService _email;
 
-        public TicketController(UserRepository userRepository, EventRepository eventRepository, TicketRepository ticketRepository)
+        public TicketController(UserRepository userRepository, EventRepository eventRepository, TicketRepository ticketRepository, EmailService email)
         {
             _UserRepository = userRepository;
             _EventRepository = eventRepository;
             _TicketRepository = ticketRepository;
+            _email = email;
         }
 
         [Route("Buy")]
@@ -38,7 +41,7 @@ namespace Ticket2U.API.Controllers
                     decimal valTotal = 0;
                     foreach (var item in tickets)
                     {
-                        item.RegisterTime = DateTime.UtcNow;
+                        item.RegisterTime = DateTime.UtcNow.AddHours(-3);
                         int idCatg = item.LotCategoryId.GetValueOrDefault();
                         var lotcatg = await _EventRepository.GetLotCategoryById(idCatg);
                         valTotal = valTotal + lotcatg.PriceCategory;
@@ -53,6 +56,7 @@ namespace Ticket2U.API.Controllers
                     {
                         await _TicketRepository.BuyTicket(tickets);
                         await _UserRepository.UpdateSaldo(valTotal, user);
+                        await _email.buyTicket(tickets);
                         return Created($"/Ticket/{tickets[0].UserId}", tickets);
                     }
                     else
@@ -145,7 +149,9 @@ namespace Ticket2U.API.Controllers
         {
             try
             {
-                await _TicketRepository.DenyCashback(cashback);
+                User user = await _UserRepository.GetUserById(cashback.Ticket.User.UserId);
+                await _TicketRepository.DenyCashback(cashback);                
+                await _email.cashbackDenied(user, cashback);
                 return this.StatusCode(StatusCodes.Status200OK, "Reembolso Negado");
             }
             catch (Exception ex)
@@ -161,7 +167,9 @@ namespace Ticket2U.API.Controllers
         {
             try
             {
+                User user = await _UserRepository.GetUserById(cashback.Ticket.User.UserId);
                 await _TicketRepository.ApproveCashback(cashback);
+                await _email.cashbackApproved(user, cashback);
                 return this.StatusCode(StatusCodes.Status200OK, "Reembolso Aprovado");
             }
             catch (Exception ex)

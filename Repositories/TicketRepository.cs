@@ -35,6 +35,7 @@ namespace Ticket2U.API.Repositories
                 ticketLocal.Cashback = new Cashback();
                 ticketLocal.Cashback.DateSolicitation = DateTime.UtcNow;
                 ticketLocal.Cashback.Description = ticket.Cashback.Description; 
+                ticketLocal.Cashback.Status = "PENDENTE";
                 await _context.SaveChangesAsync();
             }
             catch (Exception ex)

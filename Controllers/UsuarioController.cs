@@ -43,7 +43,7 @@ namespace Ticket2U.API.Controllers
             try
             {
                 user.Status = "ATIVO";
-                user.RegisterTime = DateTime.UtcNow;
+                user.RegisterTime = DateTime.UtcNow.AddHours(-3);
                 user.Login.Perfil = "USUARIO";
                 user.Credit = 100;
                 user.Login.Pass = Services.Encryptor.MD5Hash(user.Login.Pass);

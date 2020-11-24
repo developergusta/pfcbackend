@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Mail;
 using System.Threading.Tasks;
@@ -15,11 +16,11 @@ namespace Ticket2U.API.Services
             enviaEmail(body, subject, user.Login.Email, user.Name);
         }
 
-        public async Task buyTicket(Ticket ticket)
+        public async Task buyTicket(List<Ticket> tickets)
         {            
-            string body = $"Você comprou ingresso do evento {ticket.Event.TitleEvent}";
-            string subject = $"Ingresso - {ticket.Event.TitleEvent}";
-            enviaEmail(body, subject, ticket.User.Login.Email, ticket.User.Name);
+            string body = $"Você comprou ingresso do evento {tickets[0].Event.TitleEvent}";
+            string subject = $"Ingresso - {tickets[0].Event.TitleEvent}";
+            enviaEmail(body, subject, tickets[0].User.Login.Email, tickets[0].User.Name);
         }
 
         public async Task eventApproved(User user, Event evento)
@@ -33,6 +34,20 @@ namespace Ticket2U.API.Services
         {
             string body = $"Seu evento {evento.TitleEvent} foi negado por um administrador! Caso queira entender melhor o motivo, entre em contato conosco!";
             string subject = $"{evento.TitleEvent} - Negado";
+            enviaEmail(body, subject, user.Login.Email, user.Name);
+        }
+
+        public async Task cashbackApproved(User user, Cashback cashback)
+        {
+            string body = $"O cashback para seu ingresso do evento {cashback.Ticket.Event.TitleEvent} - {cashback.Ticket.LotCategory.Desc} no valor de R${cashback.Ticket.LotCategory.PriceCategory} foi aprovado por um administrador! Acesse a plataforma TICKET2U para conferir!";
+            string subject = $"Cashback - Aprovado";
+            enviaEmail(body, subject, user.Login.Email, user.Name);
+        }
+
+        public async Task cashbackDenied(User user, Cashback cashback)
+        {
+            string body = $"O cashback para seu ingresso do evento {cashback.Ticket.Event.TitleEvent} - {cashback.Ticket.LotCategory.Desc} no valor de R${cashback.Ticket.LotCategory.PriceCategory} foi negado por um administrador! Caso queira entender melhor o motivo, entre em contato conosco!";
+            string subject = $"Cashback - Negado";
             enviaEmail(body, subject, user.Login.Email, user.Name);
         }
 
