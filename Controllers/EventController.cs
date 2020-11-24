@@ -36,11 +36,13 @@ namespace Ticket2U.API.Controllers
                 eventObj.Status = "PENDENTE";
                 if (eventObj.Lots == null)
                 {
+                    eventObj.Lots = new List<Lot>();
                     var lot = new Lot();
                     lot.DateStart = eventObj.DateStart;
                     lot.DateEnd = eventObj.DateEnd;
                     eventObj.Lots.Add(lot);                    
                     var lotCatg = new LotCategory();
+                    eventObj.Lots[0].LotCategories = new List<LotCategory>();
                     eventObj.Lots[0].LotCategories.Add(lotCatg);
                 }
                 bool eventResult = await _repository.CreateEvent(eventObj);
