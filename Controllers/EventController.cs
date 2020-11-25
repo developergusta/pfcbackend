@@ -263,7 +263,7 @@ namespace Ticket2U.API.Controllers
             {
                 var evento = await _repository.GetEvent(EventId);
                 if(evento.DateStart <= DateTime.UtcNow.AddHours(-3)){
-                    return this.StatusCode(StatusCodes.Status500InternalServerError, $"Não é possível alterar o evento se já tiver acontecido (ou estiver acontecendo)");
+                    return this.StatusCode(StatusCodes.Status500InternalServerError, $"Não é possível alterar o evento se já tiver acontecido (ou estiver acontecendo), Hora local: {DateTime.UtcNow.AddHours(-3)}");
                 }
 
                 if (evento == null) return NotFound();
