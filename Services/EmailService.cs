@@ -60,8 +60,8 @@ namespace Ticket2U.API.Services
             var smtp = new SmtpClient
             {
                 Host = "smtp.gmail.com",
-                Port = 587,
-                EnableSsl = false,
+                Port = 465,
+                EnableSsl = true,
                 DeliveryMethod = SmtpDeliveryMethod.Network,
                 UseDefaultCredentials = false,
                 Credentials = new NetworkCredential(fromAddress.Address, fromPassword)
