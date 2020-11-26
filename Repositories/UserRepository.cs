@@ -46,12 +46,21 @@ namespace Ticket2U.API.Repositories
 
         public async Task<User> GetUserById(int id)
         {
-            return await _context.Users.Where(x => x.UserId == id).Include(x => x.Login).Include(x => x.Addresses).Include(x => x.Tickets).Include(x => x.Image).Include(x => x.Phones).FirstOrDefaultAsync();
+            return await _context.Users
+                .Where(x => x.UserId == id)
+                .Include(x => x.Login)
+                .Include(x => x.Addresses)
+                .Include(x => x.Tickets)
+                .Include(x => x.Image)
+                .Include(x => x.Phones)
+                .FirstOrDefaultAsync();
         }
 
         public async Task<User> GetUserByCpf(string CPF)
         {
-            return await _context.Users.Include(x => x.Login).FirstOrDefaultAsync(x => x.Cpf == CPF);
+            return await _context.Users
+                .Include(x => x.Login)
+                .FirstOrDefaultAsync(x => x.Cpf == CPF);
         }
 
         public async Task UpdateUser(User user)
@@ -78,11 +87,13 @@ namespace Ticket2U.API.Repositories
                     if (item.AddressId == 0)
                     {
                         item.UserId = user.UserId;
-                        await _context.Addresses.AddAsync(item);
+                        await _context.Addresses
+                            .AddAsync(item);
                     }
                     else
                     {
-                        var addr = userLocal.Addresses.Find(x => x.AddressId == item.AddressId);
+                        var addr = userLocal.Addresses
+                            .Find(x => x.AddressId == item.AddressId);
                         addr.City = item.City;
                         addr.Complement = item.Complement;
                         addr.Country = item.Country;
@@ -98,11 +109,13 @@ namespace Ticket2U.API.Repositories
                     if (item.PhoneId == 0)
                     {
                         item.UserId = user.UserId;
-                        await _context.Phones.AddAsync(item);
+                        await _context.Phones
+                            .AddAsync(item);
                     }
                     else
                     {
-                        var phon = userLocal.Phones.Find(x => x.PhoneId == item.PhoneId);
+                        var phon = userLocal.Phones
+                            .Find(x => x.PhoneId == item.PhoneId);
                         phon.Type = item.Type;
                         phon.Number = item.Number;
                     }
@@ -136,19 +149,30 @@ namespace Ticket2U.API.Repositories
 
         public async Task DeleteAddressUser(Address addr)
         {
-            var address = await _context.Addresses.Where(x => x.AddressId == addr.AddressId).FirstOrDefaultAsync();
+            var address = await _context.Addresses
+                .Where(x => x.AddressId == addr.AddressId)
+                .FirstOrDefaultAsync();
             _context.Addresses.Remove(address);
         }
 
         public async Task DeletePhoneUser(Phone phonObj)
         {
-            var phone = await _context.Phones.Where(x => x.PhoneId == phonObj.PhoneId).FirstOrDefaultAsync();
+            var phone = await _context.Phones
+                .Where(x => x.PhoneId == phonObj.PhoneId)
+                .FirstOrDefaultAsync();
             _context.Phones.Remove(phone);
         }
 
         public async Task<User> Login(string email, string password)
         {
-            IQueryable<User> query = _context.Users.Where(x => x.Login.Email.ToLower() == email.ToLower() && x.Login.Pass == password && x.Status != "BANIDO").Include(x => x.Login).Include(x => x.Addresses).Include(x => x.Phones).Include(x => x.Tickets).Include(x => x.Image).Include(x => x.Events);
+            IQueryable<User> query = _context.Users
+                .Where(x => x.Login.Email.ToLower() == email.ToLower() && x.Login.Pass == password && x.Status != "BANIDO")
+                .Include(x => x.Login)
+                .Include(x => x.Addresses)
+                .Include(x => x.Phones)
+                .Include(x => x.Tickets)
+                .Include(x => x.Image)
+                .Include(x => x.Events);
 
             return await query.FirstOrDefaultAsync();
         }
@@ -172,7 +196,8 @@ namespace Ticket2U.API.Repositories
 
         public async Task<Login> GetPass(string email, string pass)
         {
-            IQueryable<Login> query = _context.Logins.Where(x => x.Email.ToLower() == email.ToLower() && x.Pass == pass);
+            IQueryable<Login> query = _context.Logins
+                .Where(x => x.Email.ToLower() == email.ToLower() && x.Pass == pass);
 
             return await query.FirstOrDefaultAsync();
         }
@@ -184,13 +209,16 @@ namespace Ticket2U.API.Repositories
 
         public async Task<IEnumerable<Ticket>> GetTicketsByUser(int id)
         {
-            IQueryable<Ticket> query = _context.Tickets.Where(x => x.UserId == id).Include(x => x.Cashback);
+            IQueryable<Ticket> query = _context.Tickets
+                .Where(x => x.UserId == id)
+                .Include(x => x.Cashback);
             return await query.ToListAsync();
         }
 
         public async Task<Address> GetAddress(int id)
         {
-            return await _context.Addresses.FirstOrDefaultAsync(x => x.AddressId == id);
+            return await _context.Addresses
+                .FirstOrDefaultAsync(x => x.AddressId == id);
         }
 
         public async Task UpdateSaldo(decimal valTotal, User userObj)

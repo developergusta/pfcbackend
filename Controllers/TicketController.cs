@@ -52,7 +52,7 @@ namespace Ticket2U.API.Controllers
                     }
                     var ticketsSoldByEvent = await _TicketRepository.GetTicketsSoldByEvent(idEvento);
                     var evento = await _EventRepository.GetEvent(idEvento);
-                    if (ticketsSoldByEvent + tickets.Count > evento.Capacity)
+                    if (ticketsSoldByEvent + tickets.Count <= evento.Capacity)
                     {
                         await _TicketRepository.BuyTicket(tickets);
                         await _UserRepository.UpdateSaldo(valTotal, user);
@@ -113,6 +113,8 @@ namespace Ticket2U.API.Controllers
 
         [Route("Cashback")]
         [HttpGet]
+        [Authorize(Roles = "ADMINISTRADOR")]
+
         public async Task<IActionResult> GetCashbacks()
         {
             try

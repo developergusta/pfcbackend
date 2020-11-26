@@ -32,22 +32,41 @@ namespace Ticket2U.API.Repositories
         }
         public async Task<IEnumerable<Event>> GetAllEvents()
         {
-            return await _context.Events.Include(x => x.Address).Include(x => x.Images).Include(x => x.Lots).ToListAsync();
+            return await _context.Events
+            .Include(x => x.Address)
+            .Include(x => x.Images)
+            .Include(x => x.Lots)
+            .ToListAsync();
         }
 
         public async Task<IEnumerable<Event>> GetApprovedEvents()
         {
-            return await _context.Events.Where(x => x.Status == "APROVADO").Include(x => x.Address).Include(x => x.Images).Include(x => x.Lots).ToListAsync();
+            return await _context.Events
+                .Where(x => x.Status == "APROVADO")
+                .Include(x => x.Address)
+                .Include(x => x.Images)
+                .Include(x => x.Lots)
+                .ToListAsync();
         }
 
         public async Task<IEnumerable<Event>> GetPendingEvents()
         {
-            return await _context.Events.Where(x => x.Status == "PENDENTE").Include(x => x.Address).Include(x => x.Images).Include(x => x.Lots).ToListAsync();
+            return await _context.Events
+                .Where(x => x.Status == "PENDENTE")
+                .Include(x => x.Address)
+                .Include(x => x.Images)
+                .Include(x => x.Lots)
+                .ToListAsync();
         }
 
         public async Task<IEnumerable<Event>> GetDeniedEvents()
         {
-            return await _context.Events.Where(x => x.Status == "NEGADO").Include(x => x.Address).Include(x => x.Images).Include(x => x.Lots).ToListAsync();
+            return await _context.Events
+                .Where(x => x.Status == "NEGADO")
+                .Include(x => x.Address)
+                .Include(x => x.Images)
+                .Include(x => x.Lots)
+                .ToListAsync();
         }
 
         public async Task<Event> GetEvent(int id)
@@ -101,13 +120,17 @@ namespace Ticket2U.API.Repositories
 
         public async Task<Lot> GetLotById(int lotId)
         {
-            Lot lot = await _context.Lots.Where(x => x.LotId == lotId).FirstOrDefaultAsync();
+            Lot lot = await _context.Lots
+                .Where(x => x.LotId == lotId)
+                .FirstOrDefaultAsync();
             return lot;
         }
 
         public async Task<LotCategory> GetLotCategoryById(int lotCatgId)
         {
-            LotCategory lotCatg = await _context.LotCategories.Where(x => x.LotCategoryId == lotCatgId).FirstOrDefaultAsync();
+            LotCategory lotCatg = await _context.LotCategories
+                .Where(x => x.LotCategoryId == lotCatgId)
+                .FirstOrDefaultAsync();
             return lotCatg;
         }
         public async Task<IEnumerable<Event>> GetEventsByUserId(int userId)
@@ -248,19 +271,26 @@ namespace Ticket2U.API.Repositories
 
         public async Task<Address> GetAddress(int id)
         {
-            return await _context.Addresses.FirstOrDefaultAsync(x => x.AddressId == id);
+            return await _context.Addresses
+                .FirstOrDefaultAsync(x => x.AddressId == id);
         }
 
         public async Task<IEnumerable<Ticket>> GetTicketsByEvent(Event eventObj)
         {
-            IQueryable<Ticket> query = _context.Tickets.Where(x => x.EventId == eventObj.EventId).Include(x => x.User);
+            IQueryable<Ticket> query = _context.Tickets
+                .Where(x => x.EventId == eventObj.EventId)
+                .Include(x => x.User);
             return await query.ToListAsync();
         }
 
         public async Task<IEnumerable<Event>> GetEventsToday()
         {
             DateTime now = DateTime.UtcNow;
-            var result = await _context.Events.Where(evt => now.Month == evt.DateStart.Month && now.Year == evt.DateStart.Year && evt.DateStart.Day == now.Day).Include(x => x.Images).Include(x => x.Address).ToListAsync();
+            var result = await _context.Events
+            .Where(evt => now.Month == evt.DateStart.Month && now.Year == evt.DateStart.Year && evt.DateStart.Day == now.Day)
+            .Include(x => x.Images)
+            .Include(x => x.Address)
+            .ToListAsync();
             return result;
         }
 
