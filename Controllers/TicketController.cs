@@ -69,9 +69,9 @@ namespace Ticket2U.API.Controllers
                     return this.StatusCode(StatusCodes.Status500InternalServerError, "Saldo insuficiente");
                 }
             }
-            catch (System.Exception)
+            catch (Exception ex)
             {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, "Erro na compra de ingressos");
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro na compra de ingressos: {ex.Message}");
             }
         }
 
@@ -90,7 +90,7 @@ namespace Ticket2U.API.Controllers
                 }
                 return this.StatusCode(StatusCodes.Status500InternalServerError, "Não foi possível localizar o usuário");
             }
-            catch (System.Exception)
+            catch (Exception)
             {
                 return this.StatusCode(StatusCodes.Status500InternalServerError, "Erro na compra de ingressos");
             }
@@ -105,7 +105,7 @@ namespace Ticket2U.API.Controllers
                 var result = await _TicketRepository.GetTicketsSoldByEvent(id);
                 return Ok(result);
             }
-            catch (System.Exception)
+            catch (Exception)
             {
                 return this.StatusCode(StatusCodes.Status500InternalServerError, "Erro na compra de ingressos");
             }
@@ -122,7 +122,7 @@ namespace Ticket2U.API.Controllers
                 var result = await _TicketRepository.GetUsersTicketCashback();
                 return Ok(result);
             }
-            catch (System.Exception)
+            catch (Exception)
             {
                 return this.StatusCode(StatusCodes.Status500InternalServerError, "Erro na compra listagem de cashbacks");
             }
@@ -139,7 +139,7 @@ namespace Ticket2U.API.Controllers
             }
             catch (Exception ex)
             {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao recuperar senha: {ex}");
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao recuperar senha: {ex.Message}");
             }
         }
 
@@ -158,7 +158,7 @@ namespace Ticket2U.API.Controllers
             }
             catch (Exception ex)
             {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao alterar status do cashback: {ex}");
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao alterar status do cashback: {ex.Message}");
             }
         }
 
@@ -176,7 +176,7 @@ namespace Ticket2U.API.Controllers
             }
             catch (Exception ex)
             {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao alterar status do cashback: {ex}");
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao alterar status do cashback: {ex.Message}");
             }
         }
 
