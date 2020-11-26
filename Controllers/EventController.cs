@@ -33,6 +33,10 @@ namespace Ticket2U.API.Controllers
         {
             try
             {
+                if(eventObj.DateStart >= eventObj.DateEnd)
+                {
+                    return BadRequest($"A data de início não pode ser maior ou igual a data de fim do evento");
+                }
                 eventObj.Status = "PENDENTE";
                 if (eventObj.Lots == null)
                 {
