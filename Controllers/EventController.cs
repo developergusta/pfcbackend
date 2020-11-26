@@ -352,7 +352,7 @@ namespace Ticket2U.API.Controllers
             }
         }
 
-        [Route("Address/Delete/{LotId}")]
+        [Route("Lot/Delete/{LotId}")]
         [HttpDelete]
         public async Task<IActionResult> DeleteLotEvent(int LotId)
         {
