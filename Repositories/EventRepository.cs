@@ -92,14 +92,14 @@ namespace Ticket2U.API.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<Event>> GetMostSoldEventsOnYear ()
+        public async Task<IEnumerable<Event>> GetMostSoldEventsOnYear()
         {
             DateTime now = DateTime.UtcNow;
             var eventos = await _context.Events
-                .Where( x => x.DateStart >= new DateTime(now.Year, 1, 1))
-                .Include( x => x.Tickets )
-                .OrderByDescending ( x => x.Tickets)
-                .Take( 5 )
+                .Where(x => x.DateStart >= new DateTime(now.Year, 1, 1))
+                .Include(x => x.Tickets)
+                .OrderByDescending(x => x.Tickets)
+                .Take(5)
                 .ToListAsync();
 
             return eventos;
@@ -174,11 +174,11 @@ namespace Ticket2U.API.Repositories
 
                 foreach (var img in eventObj.Images)
                 {
-                    if(img.EventId == null || img.EventId == 0)
+                    if (img.EventId == null || img.EventId == 0)
                     {
                         img.EventId = eventLocal.EventId;
                     }
-                    if(img.IdImage == 0)
+                    if (img.IdImage == 0)
                     {
                         await _context.Images.AddAsync(img);
                         await _context.SaveChangesAsync();
@@ -190,47 +190,56 @@ namespace Ticket2U.API.Repositories
                         await _context.SaveChangesAsync();
                     }
                 }
-                
-                foreach (var item in eventObj.Lots)
+
+                foreach (var newLot in eventObj.Lots)
                 {
-                    if (item.LotId == 0)
+                    if (newLot.LotId == 0)
                     {
-                        item.EventId = eventObj.EventId;      
-                        if(item.DateStart == null)
+                        newLot.EventId = eventObj.EventId;
+                        if (newLot.DateStart == null)
                         {
-                            item.DateStart = eventObj.DateStart;
-                        }    
-                        if(item.DateEnd == null)
+                            newLot.DateStart = eventObj.DateStart;
+                        }
+                        if (newLot.DateEnd == null)
                         {
-                            item.DateEnd = eventObj.DateEnd;
-                        }    
-                        await _context.Lots.AddAsync(item);
+                            newLot.DateEnd = eventObj.DateEnd;
+                        }
+                        await _context.Lots.AddAsync(newLot);
                         await _context.SaveChangesAsync();
 
-                        foreach (var itemCatg in item.LotCategories)
+                        foreach (var itemCatg in newLot.LotCategories)
                         {
-                            itemCatg.LotId = item.LotId;
-                            await _context.Lots.AddAsync(item);
+                            itemCatg.LotId = newLot.LotId;
+                            await _context.Lots.AddAsync(newLot);
                             await _context.SaveChangesAsync();
                         }
                     }
                     else
                     {
-                        var lot = eventLocal.Lots.Find(x => x.LotId == item.LotId);
+                        var oldLot = eventLocal.Lots.Find(x => x.LotId == newLot.LotId);
 
-                        foreach (var lotCatg in lot.LotCategories)
+                        foreach (var lotCatg in oldLot.LotCategories)
                         {
-                            if (lotCatg.LotId == 0)
+                            if (lotCatg.LotId != 0)
                             {
-                                lotCatg.LotId = lot.LotId;
-                                await _context.LotCategories.AddAsync(lotCatg);
+                                var existLotCatg = oldLot.LotCategories.Find(y => y.LotCategoryId == lotCatg.LotCategoryId);
+                                var updtLotCatg = newLot.LotCategories.Find(y => y.LotCategoryId == lotCatg.LotCategoryId);
+                                existLotCatg.Desc = updtLotCatg.Desc;
+                                existLotCatg.PriceCategory = updtLotCatg.PriceCategory;
                                 await _context.SaveChangesAsync();
                             }
-                            else
+                        }
+
+                        if (oldLot.LotCategories.Count > newLot.LotCategories.Count)
+                        {
+                            foreach (var lotCatg in oldLot.LotCategories)
                             {
-                                var existLotCatg = lot.LotCategories.Find(y => y.LotCategoryId == lotCatg.LotCategoryId);
-                                existLotCatg.Desc = lotCatg.Desc;
-                                existLotCatg.PriceCategory = lotCatg.PriceCategory;
+                                if (lotCatg.LotId == 0)
+                                {
+                                    lotCatg.LotId = oldLot.LotId;
+                                    await _context.LotCategories.AddAsync(lotCatg);
+                                    await _context.SaveChangesAsync();
+                                }
                             }
                         }
                     }
