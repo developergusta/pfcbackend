@@ -163,7 +163,7 @@ namespace Ticket2U.API.Controllers
         [Route("Cashback/1")]
         [HttpPut]
         [Authorize(Roles = "ADMINISTRADOR")]
-        public async Task<IActionResult> ApproveCashback(Cashback cashback)
+        public async Task<IActionResult> ApproveCashback([FromBody]Cashback cashback)
         {
             try
             {
