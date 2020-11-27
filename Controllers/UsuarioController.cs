@@ -128,22 +128,14 @@ namespace Ticket2U.API.Controllers
         }
 
 
-        [Route("Address/Delete/{UserId}")]
+        [Route("Address/Delete/{AddressId}")]
         [HttpDelete]
-        public async Task<IActionResult> DeleteAddressUser(int UserId, [FromBody] Address addr)
+        public async Task<IActionResult> DeleteAddressUser(int AddressId)
         {
             try
             {
-                var user = await _repository.GetUserById(UserId);
-                if (user == null)
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    await _repository.DeleteAddressUser(addr);
-                    return Ok(addr);
-                }
+                await _repository.DeleteAddressUser(AddressId);
+                return Ok("Endereço excluído com sucesso");
             }
             catch (Exception ex)
             {
@@ -151,22 +143,15 @@ namespace Ticket2U.API.Controllers
             }
         }
 
-        [Route("Phone/Delete/{UserId}")]
+        [Route("Phone/Delete/{PhoneId}")]
         [HttpDelete]
-        public async Task<IActionResult> DeletePhoneUser(int UserId, [FromBody] Phone phone)
+        public async Task<IActionResult> DeletePhoneUser(int PhoneId)
         {
             try
             {
-                var user = await _repository.GetUserById(UserId);
-                if (user == null)
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    await _repository.DeletePhoneUser(phone);
-                    return Ok(phone);
-                }
+                await _repository.DeletePhoneUser(PhoneId);
+                return Ok("Telefone Excluído com Sucesso");
+
             }
             catch (Exception ex)
             {

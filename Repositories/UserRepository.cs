@@ -80,6 +80,10 @@ namespace Ticket2U.API.Repositories
                 userLocal.Rg = user.Rg;
                 userLocal.Login.Email = user.Login.Email;
                 userLocal.DateBirth = user.DateBirth;
+                if (userLocal.Image == null)
+                {
+                    userLocal.Image = new Image();
+                }
                 userLocal.Image.Src = user.Image.Src;
                 await _context.SaveChangesAsync();
 
@@ -148,18 +152,18 @@ namespace Ticket2U.API.Repositories
             }
         }
 
-        public async Task DeleteAddressUser(Address addr)
+        public async Task DeleteAddressUser(int AddressId)
         {
             var address = await _context.Addresses
-                .Where(x => x.AddressId == addr.AddressId)
+                .Where(x => x.AddressId == AddressId)
                 .FirstOrDefaultAsync();
             _context.Addresses.Remove(address);
         }
 
-        public async Task DeletePhoneUser(Phone phonObj)
+        public async Task DeletePhoneUser(int phoneId)
         {
             var phone = await _context.Phones
-                .Where(x => x.PhoneId == phonObj.PhoneId)
+                .Where(x => x.PhoneId == phoneId)
                 .FirstOrDefaultAsync();
             _context.Phones.Remove(phone);
         }
