@@ -51,6 +51,11 @@ namespace Ticket2U.API.Services
             enviaEmail(body, subject, user.Login.Email, user.Name);
         }
 
+
+        public async Task TesteMail()
+        {
+            enviaEmail("teste", "teste", "olive.guga@gmail.com", "Gustavo");
+        }
         private void enviaEmail(string body, string subject, string emailUser, string nameUser)
         {
             var fromAddress = new MailAddress("reginaldokleber002@gmail.com", "Administrador - Ticket 2U");
@@ -60,8 +65,8 @@ namespace Ticket2U.API.Services
             var smtp = new SmtpClient
             {
                 Host = "smtp.gmail.com",
-                Port = 465,
-                EnableSsl = true,
+                Port = 587,
+                EnableSsl = false,
                 DeliveryMethod = SmtpDeliveryMethod.Network,
                 UseDefaultCredentials = false,
                 Credentials = new NetworkCredential(fromAddress.Address, fromPassword)

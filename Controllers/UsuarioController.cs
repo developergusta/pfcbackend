@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Ticket2U.API.Repositories;
 using Ticket2U.API.Models;
 using System.IO;
+using Ticket2U.API.Services;
 
 namespace Ticket2U.API.Controllers
 {
@@ -14,9 +15,11 @@ namespace Ticket2U.API.Controllers
     public class UsuarioController : Controller
     {
         private readonly UserRepository _repository;
-        public UsuarioController(UserRepository repository)
+        private readonly EmailService _email;
+        public UsuarioController(UserRepository repository, EmailService email)
         {
             _repository = repository;
+            _email = email;
         }
 
 
@@ -231,5 +234,19 @@ namespace Ticket2U.API.Controllers
 
         #endregion
 
+        [Route("Email")]
+        [HttpGet]
+        public async Task<IActionResult> SendMail(int UserId)
+        {
+            try
+            {
+                await _email.TesteMail();
+                return Ok("email enviado");
+            }
+            catch (Exception ex)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao atualizar usuário: {ex}");
+            }
+        }
     }
 }
