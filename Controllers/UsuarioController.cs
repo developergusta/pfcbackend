@@ -235,19 +235,5 @@ namespace Ticket2U.API.Controllers
 
         #endregion
 
-        [Route("Email")]
-        [HttpGet]
-        public async Task<IActionResult> SendMail(int UserId)
-        {
-            try
-            {
-                await _email.TesteMail();
-                return Ok("email enviado");
-            }
-            catch (Exception ex)
-            {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao atualizar usuário: {ex}");
-            }
-        }
     }
 }

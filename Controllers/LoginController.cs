@@ -33,8 +33,9 @@ namespace Ticket2U.API.Controllers
                 var user = await _repository.Login(userObj.Login.Email, Services.Encryptor.MD5Hash(userObj.Login.Pass));
 
                 if (user == null)
+                {
                     return NotFound(new { message = "Usuário ou senha inválidos" });
-                    
+                }
                 else if(user.Status != "ATIVO") 
                     return this.StatusCode(StatusCodes.Status500InternalServerError, "Usuário pode estar banido ou inativo, favor entrar em contato com o suporte");
 
