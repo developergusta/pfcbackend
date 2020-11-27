@@ -232,9 +232,9 @@ namespace Ticket2U.API.Repositories
 
                         if (oldLot.LotCategories.Count < newLot.LotCategories.Count)
                         {
-                            foreach (var lotCatg in oldLot.LotCategories)
+                            foreach (var lotCatg in newLot.LotCategories)
                             {
-                                if (lotCatg.LotId == 0)
+                                if (lotCatg.LotCategoryId == 0)
                                 {
                                     lotCatg.LotId = oldLot.LotId;
                                     await _context.LotCategories.AddAsync(lotCatg);
