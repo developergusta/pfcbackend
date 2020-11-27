@@ -230,7 +230,7 @@ namespace Ticket2U.API.Repositories
                             }
                         }
 
-                        if (oldLot.LotCategories.Count > newLot.LotCategories.Count)
+                        if (oldLot.LotCategories.Count < newLot.LotCategories.Count)
                         {
                             foreach (var lotCatg in oldLot.LotCategories)
                             {
