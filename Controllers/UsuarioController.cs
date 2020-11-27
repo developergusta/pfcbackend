@@ -67,7 +67,7 @@ namespace Ticket2U.API.Controllers
         }
 
         [Route("Endereco")]
-        [Authorize(Roles = "Administrador")]
+        [Authorize(Roles = "ADMINISTRADOR")]
         [HttpGet]
         public async Task<IActionResult> GetAllAdresses()
         {
@@ -79,28 +79,6 @@ namespace Ticket2U.API.Controllers
             catch (System.Exception)
             {
                 return this.StatusCode(StatusCodes.Status500InternalServerError, "Erro na listagem de usuários");
-            }
-        }
-
-        [Route("Delete/{id}")]
-        [Authorize(Roles = "Administrador")]
-        [HttpDelete]
-        public async Task<IActionResult> DeleteUser(int id)
-        {
-            try
-            {
-                var user = await _repository.GetUserById(id);
-
-                if (user == null) return NotFound();
-                else
-                {
-                    await _repository.RemoveUser(user);
-                    return Ok();
-                }
-            }
-            catch (Exception ex)
-            {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao atualizar evento: {ex}");
             }
         }
 
@@ -163,6 +141,29 @@ namespace Ticket2U.API.Controllers
         }
 
         #region ADMINISTRADOR
+        
+
+        [HttpDelete]
+        [Route("Delete/{id}")]
+        [Authorize(Roles = "ADMINISTRADOR")]
+        public async Task<IActionResult> DeleteUser(int id)
+        {
+            try
+            {
+                var user = await _repository.GetUserById(id);
+
+                if (user == null) return NotFound();
+                else
+                {
+                    await _repository.RemoveUser(user);
+                    return Ok();
+                }
+            }
+            catch (Exception ex)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao deletar usuário: {ex}");
+            }
+        }
 
         [Route("")]
         [HttpGet]

@@ -22,7 +22,7 @@ namespace Ticket2U.API.Services
                     new Claim(ClaimTypes.Role, user.Login.Perfil.ToString() ),
                     new Claim(ClaimTypes.Name, user.Name.ToString() ),
                 }),
-                Expires = DateTime.UtcNow.AddHours(200),
+                Expires = DateTime.UtcNow.AddHours(2),
                 SigningCredentials = 
                     new SigningCredentials(
                         new SymmetricSecurityKey(key),

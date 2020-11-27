@@ -66,7 +66,7 @@ namespace Ticket2U.API.Services
             {
                 Host = "smtp.gmail.com",
                 Port = 587,
-                EnableSsl = false,
+                EnableSsl = true,
                 DeliveryMethod = SmtpDeliveryMethod.Network,
                 UseDefaultCredentials = false,
                 Credentials = new NetworkCredential(fromAddress.Address, fromPassword)
