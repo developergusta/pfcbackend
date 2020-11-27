@@ -158,6 +158,7 @@ namespace Ticket2U.API.Repositories
                 .Where(x => x.AddressId == AddressId)
                 .FirstOrDefaultAsync();
             _context.Addresses.Remove(address);
+            await _context.SaveChangesAsync();
         }
 
         public async Task DeletePhoneUser(int phoneId)
@@ -166,6 +167,7 @@ namespace Ticket2U.API.Repositories
                 .Where(x => x.PhoneId == phoneId)
                 .FirstOrDefaultAsync();
             _context.Phones.Remove(phone);
+            await _context.SaveChangesAsync();
         }
 
         public async Task<User> Login(string email, string password)
