@@ -94,11 +94,11 @@ namespace Ticket2U.API.Repositories
 
         public async Task<IEnumerable<Event>> GetMostSoldEventsOnYear()
         {
-            DateTime now = DateTime.UtcNow;
+            DateTime inicioAno = new DateTime(DateTime.UtcNow.Year, 1, 1);
             var eventos = await _context.Events
-                .Where(x => x.DateStart >= new DateTime(now.Year, 1, 1))
+                .Where(x => x.DateStart >= inicioAno)
                 .Include(x => x.Tickets)
-                .OrderByDescending(x => x.Tickets)
+                .OrderByDescending(x => x.Tickets.Count)
                 .Take(5)
                 .ToListAsync();
 

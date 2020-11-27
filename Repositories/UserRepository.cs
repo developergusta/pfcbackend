@@ -81,14 +81,15 @@ namespace Ticket2U.API.Repositories
                 userLocal.Login.Email = user.Login.Email;
                 userLocal.DateBirth = user.DateBirth;
                 userLocal.Image.Src = user.Image.Src;
+                await _context.SaveChangesAsync();
 
                 foreach (var item in user.Addresses)
                 {
                     if (item.AddressId == 0)
                     {
                         item.UserId = user.UserId;
-                        await _context.Addresses
-                            .AddAsync(item);
+                        await _context.Addresses.AddAsync(item);
+                        await _context.SaveChangesAsync();
                     }
                     else
                     {
@@ -101,6 +102,7 @@ namespace Ticket2U.API.Repositories
                         addr.State = item.State;
                         addr.Street = item.Street;
                         addr.ZipCode = item.ZipCode;
+                        await _context.SaveChangesAsync();
                     }
                 }
 
@@ -109,15 +111,14 @@ namespace Ticket2U.API.Repositories
                     if (item.PhoneId == 0)
                     {
                         item.UserId = user.UserId;
-                        await _context.Phones
-                            .AddAsync(item);
+                        await _context.Phones.AddAsync(item);
                     }
                     else
                     {
-                        var phon = userLocal.Phones
-                            .Find(x => x.PhoneId == item.PhoneId);
+                        var phon = userLocal.Phones.Find(x => x.PhoneId == item.PhoneId);
                         phon.Type = item.Type;
                         phon.Number = item.Number;
+                        await _context.SaveChangesAsync();
                     }
                 }
 
