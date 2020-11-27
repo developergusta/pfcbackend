@@ -217,6 +217,9 @@ namespace Ticket2U.API.Repositories
                     else
                     {
                         var oldLot = eventLocal.Lots.Find(x => x.LotId == newLot.LotId);
+                        oldLot.DateStart = newLot.DateStart;
+                        oldLot.DateEnd = newLot.DateEnd;
+                        await _context.SaveChangesAsync();
 
                         foreach (var lotCatg in oldLot.LotCategories)
                         {
